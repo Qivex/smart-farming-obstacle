@@ -1,0 +1,50 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$defs": {
+		"extractableTopicSchemas": {
+			"enum": [
+				"nav_msgs/msg/Odometry",
+				"sensor_msgs/msg/CompressedImage",
+				"sensor_msgs/msg/PointCloud2"
+			]
+		}
+	},
+	"type": "object",
+	"properties": {
+		"rosbagPath": {
+			"description": "Path to the recording from ROS",
+			"type": "string"
+		},
+		"startTime": {
+			"description": "Skip messages before timestamp (seconds)",
+			"type": "integer"
+		},
+		"endTime": {
+			"description": "Skip messages after timestamp (seconds)",
+			"type": "integer"
+		},
+		"topics": {
+			"type": "array",
+			"minLength": 1,
+			"items": {
+				"type": "object",
+				"properties": {
+					"alias": {
+						"description": "Shortened identifier for each topic",
+						"type": "string"
+					},
+					"path": {
+						"description": "Full path name of topic in recording",
+						"type": "string"
+					},
+					"schema": {
+						"description": "Schema of this topic",
+						"$ref": "#/$defs/extractableTopicSchemas"
+					}
+				},
+				"required": ["alias", "path", "schema"]
+			}
+		}
+	},
+	"required": ["rosbagPath", "topics"]
+}

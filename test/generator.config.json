@@ -1,0 +1,42 @@
+{
+	"$schema": "../schema/generator.config.schema.json",
+	"scene": {
+		"zeroCoordinate": [54,16,120],
+		"sun": {}
+	},
+	"inputPaths": {
+		"data": "odom.json",
+		"images": "images/"
+	},
+	"sensors": [
+		{
+			"id": "zed_left",
+			"type": "camera",
+			"fov": 110,
+			"parentBone": 4
+		}
+	],
+	"bones": [
+		{
+			"transform": {
+				"scale": {
+					"x": 1,
+					"y": 1,
+					"z": 1
+				},
+				"offset": "",
+				"rotation": ""
+			}
+		}
+	],
+	"animationMapping": [
+		{
+			"odomSource": ["pos", "x"],
+			"animTarget": {
+				"boneIndex": 0,
+				"dataPath": "location",
+				"dataIndex": 0
+			}
+		}
+	]
+}

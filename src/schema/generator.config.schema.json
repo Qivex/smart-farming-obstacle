@@ -1,0 +1,148 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$defs": {
+		"indexValue": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"positiveNumber": {
+			"type": "number",
+			"minimum": 0
+		},
+		"pixelCount": {
+			"type": "integer",
+			"exclusiveMinimum": 0
+		},
+		"scaleValue": {
+			"type": "number",
+			"default": 1,
+			"exclusiveMinimum": 0
+		},
+		"scale": {
+			"description": "",
+			"anyOf": [
+				{ "$ref": "#/$defs/scaleValue" },
+				{
+					"type": "object",
+					"properties": {
+						"x": { "$ref": "#/$defs/scaleValue" },
+						"y": { "$ref": "#/$defs/scaleValue" },
+						"z": { "$ref": "#/$defs/scaleValue" }
+					},
+					"additionalProperties": false
+				}
+			]
+		},
+		"rotationValue": {
+			"type": "number",
+			"minimum": -1,
+			"maximum": 1
+		},
+		"rotation": {
+			"description": "Three-dimensional rotation",
+			"type": "object",
+			"properties": {
+				"x": { "$ref": "#/$defs/rotationValue" },
+				"y": { "$ref": "#/$defs/rotationValue" },
+				"z": { "$ref": "#/$defs/rotationValue" },
+				"w": { "$ref": "#/$defs/rotationValue" }
+			}
+		},
+		"transform": {
+			"description": "",
+			"type": "object",
+			"required": ["offset", "scale", "rotation"],
+			"additionalProperties": false,
+			"properties": {
+				"offset": {},
+				"scale": { "$ref": "#/$defs/scale" },
+				"rotation": {}
+			}
+		}
+	},
+	"type": "object",
+	"properties": {
+		"scene": {
+			"type": "object",
+			"required": ["zeroCoordinate", "sun"]
+		},
+		"bones": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"parentIndex": { "$ref": "#/$defs/indexValue" },
+					"length": { "$ref": "#/$defs/positiveNumber"},
+					"rotation": { "$ref": "#/$defs/rotation" }
+				}
+			}
+		},
+		"animationMapping": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"odomSource": {
+						"description": "Path to animation data",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"animTarget": {
+						"type": "object",
+						"properties": {
+							"boneIndex": {
+								"description": "Animated bone",
+								"$ref": "#/$defs/indexValue"
+							},
+							"dataPath": {
+								"description": "Path to animated bone data",
+								"enum": ["rotation_quaternion", "location"]
+							},
+							"dataIndex": {
+								"description": "Array index of data (only required if dataPath references an array)",
+								"$ref": "#/$defs/indexValue"
+							}
+						},
+						"required": ["boneIndex", "dataPath"],
+						"if": {
+							"properties": {
+								"dataPath": {
+									"enum": ["rotation_quaternion", "location"]
+								}
+							}
+						},
+						"then": {
+							"required": ["dataIndex"]
+						}
+					}
+				}
+			}
+		},
+		"cameras": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"fov": {
+						"type": "number",
+						"exclusiveMinimum": 0,
+						"exclusiveMaximum": 180
+					},
+					"resolution": {
+						"type": "object",
+						"properties": {
+							"width": { "$ref": "#/$defs/pixelCount" },
+							"height": { "$ref": "#/$defs/pixelCount" }
+						}
+					}
+				}
+			}
+		}
+	},
+	"required": ["scene", "bones", "cameras"]
+}

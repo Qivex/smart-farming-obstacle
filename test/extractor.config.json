@@ -1,0 +1,11 @@
+{
+	"$schema": "../schema/extractor.config.schema.json",
+	"rosbagPath": "file://test.mcap",
+	"topics": [
+		{
+			"alias": "zed_left",
+			"path": "/zed/zed_node/left_raw/image_raw_color/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		}
+	]
+}
