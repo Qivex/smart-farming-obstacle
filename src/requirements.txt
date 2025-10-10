@@ -1,1 +1,6 @@
+imageio
+imageio-freeimage
 jsonschema
+mcap
+mcap-ros2-support
+numpy

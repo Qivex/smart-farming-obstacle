@@ -1,1 +1,1 @@
-from core.load import load_config, load_json
+from .load import load_config, load_json
