@@ -14,7 +14,7 @@ class TopicExtractor(ABC):
 
 
 	@abstractmethod
-	def on_message(self, message):
+	def on_message(self, message, timestamp):
 		pass
 
 

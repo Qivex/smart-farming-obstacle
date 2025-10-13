@@ -39,7 +39,7 @@ def load_config(schema=None):
 
 def load_json(path, name):
 	try:
-		with open(path) as file:
+		with open(path, "r") as file:
 			return loads(file.read())
 	except FileNotFoundError as e:
 		print(f"No {name} file found at provided path:\n\t{e.filename}")

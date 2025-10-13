@@ -23,8 +23,8 @@ class LidarImageTopicExtractor(ImageTopicExtractor):
 		super().__init__(id, export_root)
 
 
-	def on_message(self, message):
-		self.append_timestamp(message.stamp)
+	def on_message(self, message, timestamp):
+		self.timeinfo.append(timestamp)
 
 		# Get image size
 		width = message.width
@@ -53,4 +53,6 @@ class LidarImageTopicExtractor(ImageTopicExtractor):
 
 		# Write image to folder
 		imageio.imwrite(self.get_image_path("exr"), arr, flags=5)	# From FreeImage.h: EXR_FLOAT = 1, EXR_ZIP = 4
+		
+		self.current_index += 1
 		

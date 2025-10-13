@@ -7,14 +7,15 @@ class CameraImageTopicExtractor(ImageTopicExtractor):
 		super().__init__(id, export_root)
 	
 
-	def on_message(self, message):
+	def on_message(self, message, timestamp):
 		if "jpeg" not in message.format:
 			print(f"Unsupported image format: {message.format}")
 			return
 
-		self.append_timestamp(message.stamp)
+		self.timeinfo.append(timestamp)
 
-		with open(self.get_image_path("jpg")) as image_file:
+		with open(self.get_image_path("jpg"), "wb") as image_file:
 			image_file.write(message.data)
+		
 		self.current_index += 1
 		

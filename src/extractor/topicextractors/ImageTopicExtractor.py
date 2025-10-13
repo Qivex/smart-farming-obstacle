@@ -31,8 +31,3 @@ class ImageTopicExtractor(TopicExtractor):
 	def get_image_path(self, format):
 		image_filename = IMAGE_FILE_FORMATSTRING.format(id=self.id, index=self.current_index, format=format)
 		return join(self.image_path, image_filename)
-
-
-	def append_timestamp(self, stamp):
-		timestamp = stamp.sec * 10e9 + stamp.nsec
-		self.timeinfo.append(timestamp)
