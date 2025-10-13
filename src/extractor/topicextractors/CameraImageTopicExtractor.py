@@ -1,7 +1,8 @@
-from .ImageTopic import ImageTopic
+from . import ImageTopicExtractor
 
 
-class CameraImageTopic(ImageTopic):
+
+class CameraImageTopicExtractor(ImageTopicExtractor):
 	def __init__(self, id, export_root):
 		super().__init__(id, export_root)
 	

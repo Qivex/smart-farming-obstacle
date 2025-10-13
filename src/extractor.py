@@ -1,28 +1,63 @@
+from math import floor
+from os import makedirs
+from os.path import isfile, realpath
+from sys import exit
+from time import time
+
 from mcap.reader import make_reader
 from mcap_ros2.decoder import DecoderFactory
 
 from .core import load_config
+from .extractor import TopicExtractorFactory
 from .schema import extractor_config_schema
-from .extractor.topics import CameraImageTopic, LidarImageTopic
 
-
-schema_to_extractor_mapping = {
-	"sensor_msgs/msg/CompressedImage": CameraImageTopic,
-	"sensor_msgs/msg/PointCloud2": LidarImageTopic,
-	"nav_msgs/msg/Odometry": None
-}
 
 
 def main():
 	config = load_config(schema=extractor_config_schema)
-	# Get all required values from config
-	required_topics = set([s["topic"] for s in config["sensors"]])
-	# Todo: Check config content for additional details not verifiable with schema
+
+	# Read values from config
+	if "startTime" in config:
+		start_time = config["startTime"] * 1e9
+	if "endTime" in config:
+		end_time = config["endTime"] * 1e9
+	try:
+		recording_path = realpath(config["recordingPath"], strict=True)
+	except FileNotFoundError as e:
+		print(f"No recording file found at:\n\t{recording_path}")
+		exit()
+	except Exception as e:
+		print(f"Unknown error when trying to access recording file:\n\t{e}")
+
+	# Create export directory
+	try:
+		export_path = f"{realpath(config["exportPath"])}@{floor(time())}"	# Add timestamp to avoid overwriting previous export
+		makedirs(export_path)
+	except Exception as e:
+		print(f"Error while creating output directory:\n\t{e}")
+	
+	# Init topic extractors
+	topic_extractors = {}
+	topic_extractor_factory = TopicExtractorFactory(export_path)
+	for topic_config in config["topics"]:
+		path = topic_config["path"]
+		extractor = topic_extractor_factory.create_from_config(topic_config)
+		extractor.before_extract()
+		topic_extractors[path] = extractor
+		
+
 	# Iterate through messages
-	with open(config["rosbagPath"], "rb") as recording_file:
+	with open(recording_path, "rb") as recording_file:
 		reader = make_reader(recording_file, decoder_factories=[DecoderFactory()])
-		for schema, channel, message, ros_msg in reader.iter_decoded_messages(topics=TOPIC_PATHS, start_time=START_TIME, end_time=END_TIME):
-			pass
+		for channel, ros_msg in reader.iter_decoded_messages(topics=topic_extractors.keys(), start_time=start_time, end_time=end_time):
+			# Execute assigned extractor
+			if channel.topic in topic_extractors:
+				extractor = topic_extractors[channel.topic]
+				extractor.on_message(ros_msg)
+
+	# Close extractors
+	for extractor in topic_extractors.values():
+		extractor.after_extract()
 	
 
 if __name__ == "__main__":

@@ -2,11 +2,12 @@ from os import mkdir
 from os.path import join
 from json import dumps
 
-from .Topic import Topic
+from . import TopicExtractor
 from core.const import TIMEINFO_FILENAME, IMAGE_FILE_FORMATSTRING
 
 
-class ImageTopic(Topic):
+
+class ImageTopicExtractor(TopicExtractor):
 	def __init__(self, id, export_root):
 		super().__init__(id, export_root)
 		self.image_path = join(self.export_root, self.id)

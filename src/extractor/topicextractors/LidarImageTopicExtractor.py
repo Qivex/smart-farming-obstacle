@@ -1,4 +1,3 @@
-from os.path import join
 from struct import unpack
 from math import sqrt
 
@@ -6,8 +5,9 @@ import numpy as np
 import imageio
 imageio.plugins.freeimage.download()	# Required for OpenEXR
 
-from .ImageTopic import ImageTopic
+from . import ImageTopicExtractor
 from core.const import VIEWPORT_CLIP_NEAR, VIEWPORT_CLIP_FAR
+
 
 
 def _clip_depth(value, near, far):
@@ -18,7 +18,7 @@ def _clip_depth(value, near, far):
 	return (value - near) / (far - near)
 
 
-class LidarImageTopic(ImageTopic):
+class LidarImageTopicExtractor(ImageTopicExtractor):
 	def __init__(self, id, export_root):
 		super().__init__(id, export_root)
 

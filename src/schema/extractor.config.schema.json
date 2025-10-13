@@ -11,8 +11,12 @@
 	},
 	"type": "object",
 	"properties": {
-		"rosbagPath": {
+		"recordingPath": {
 			"description": "Path to the recording from ROS",
+			"type": "string"
+		},
+		"exportPath": {
+			"description": "Path to exported artifacts (will be created)",
 			"type": "string"
 		},
 		"startTime": {
@@ -46,5 +50,5 @@
 			}
 		}
 	},
-	"required": ["rosbagPath", "topics"]
+	"required": ["recordingPath", "exportPath", "topics"]
 }
