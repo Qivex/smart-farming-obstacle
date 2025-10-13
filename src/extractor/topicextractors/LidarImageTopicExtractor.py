@@ -8,8 +8,6 @@ imageio.plugins.freeimage.download()	# Required for OpenEXR
 from . import ImageTopicExtractor
 from core.const import VIEWPORT_CLIP_NEAR, VIEWPORT_CLIP_FAR
 
-
-
 def _clip_depth(value, near, far):
 	if value > far:
 		return 1
@@ -17,12 +15,7 @@ def _clip_depth(value, near, far):
 		return 0
 	return (value - near) / (far - near)
 
-
 class LidarImageTopicExtractor(ImageTopicExtractor):
-	def __init__(self, id, export_root):
-		super().__init__(id, export_root)
-
-
 	def on_message(self, message, timestamp):
 		self.timeinfo.append(timestamp)
 

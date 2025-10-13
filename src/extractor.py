@@ -43,7 +43,6 @@ def main():
 		extractor.before_extract()
 		topic_extractors[path] = extractor
 		
-
 	# Iterate through messages
 	with open(recording_path, "rb") as recording_file:
 		reader = make_reader(recording_file, decoder_factories=[DecoderFactory()])

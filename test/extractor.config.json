@@ -14,6 +14,16 @@
 			"alias": "ouster",
 			"path": "/ouster/points",
 			"schema": "sensor_msgs/msg/PointCloud2"
+		},
+		{
+			"alias": "gps",
+			"path": "/novatel/oem7/bestpos",
+			"schema": "novatel_oem7_msgs/msg/BESTPOS"
+		},
+		{
+			"alias": "zed_odom",
+			"path": "/zed/zed_node/odom",
+			"schema": "nav_msgs/msg/Odometry"
 		}
 	]
 }

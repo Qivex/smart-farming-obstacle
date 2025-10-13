@@ -5,8 +5,6 @@ from json import dumps
 from . import TopicExtractor
 from core.const import TIMEINFO_FILENAME, IMAGE_FILE_FORMATSTRING
 
-
-
 class ImageTopicExtractor(TopicExtractor):
 	def __init__(self, id, export_root):
 		super().__init__(id, export_root)
@@ -16,17 +14,14 @@ class ImageTopicExtractor(TopicExtractor):
 		self.current_index = 1
 		pass
 
-
 	def before_extract(self):
 		# Create folder to contain exported images
 		mkdir(self.image_path)
-
 
 	def after_extract(self):
 		# Write timestamp of each image into json. Required for correct timing of animation data
 		with open(self.timeinfo_path, "w") as timeinfo_file:
 			timeinfo_file.write(dumps(self.timeinfo))
-
 
 	def get_image_path(self, format):
 		image_filename = IMAGE_FILE_FORMATSTRING.format(id=self.id, index=self.current_index, format=format)
