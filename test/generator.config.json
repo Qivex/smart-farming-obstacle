@@ -13,20 +13,23 @@
 			"id": "zed_left",
 			"type": "camera",
 			"fov": 110,
-			"parentBone": 4
+			"parentBone": "branch2a"
 		}
 	],
 	"bones": [
 		{
-			"transform": {
-				"scale": {
-					"x": 1,
-					"y": 1,
-					"z": 1
-				},
-				"offset": "",
-				"rotation": ""
-			}
+			"id": "branch1",
+			"offset": {"x": 1, "y": 1, "z": 1}
+		},
+		{
+			"id": "branch2",
+			"offset": {"x": 0, "y": -1, "z": 0},
+			"children": [
+				{
+					"id": "branch2a",
+					"offset": {"x": 0, "y": 0, "z": 1}
+				}
+			]
 		}
 	],
 	"animationMapping": [

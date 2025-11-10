@@ -30,10 +30,13 @@ path.append(join(module_directory, "Lib", "site-packages"))
 from core import load_config
 from schema import generator_config_schema
 
+from generator.armature import create_armature
+
 
 def main():
 	config = load_config(schema=generator_config_schema)
 	# Todo: Check config content for additional details not verifiable with schema
+	create_armature(config["bones"])
 
 
 if __name__ == "__main__":

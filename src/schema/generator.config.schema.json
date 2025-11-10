@@ -13,6 +13,15 @@
 			"type": "integer",
 			"exclusiveMinimum": 0
 		},
+		"offset": {
+			"type": "object",
+			"properties": {
+				"x": { "type": "number" },
+				"y": { "type": "number" },
+				"z": { "type": "number" }
+			},
+			"required": ["x", "y", "z"]
+		},
 		"scaleValue": {
 			"type": "number",
 			"default": 1,
@@ -46,18 +55,31 @@
 				"y": { "$ref": "#/$defs/rotationValue" },
 				"z": { "$ref": "#/$defs/rotationValue" },
 				"w": { "$ref": "#/$defs/rotationValue" }
-			}
+			},
+			"required": ["x", "y", "z", "w"]
 		},
 		"transform": {
 			"description": "",
 			"type": "object",
-			"required": ["offset", "scale", "rotation"],
-			"additionalProperties": false,
 			"properties": {
-				"offset": {},
+				"offset": { "$ref": "#/$defs/offset" },
 				"scale": { "$ref": "#/$defs/scale" },
-				"rotation": {}
-			}
+				"rotation": { "$ref": "#/$defs/rotation" }
+			},
+			"required": ["offset", "scale", "rotation"]
+		},
+		"boneData": {
+			"description": "",
+			"type": "object",
+			"properties": {
+				"id": { "type": "string" },
+				"offset": { "$ref": "#/$defs/offset" },
+				"children": {
+					"type": "array",
+					"items": { "$ref": "#/$defs/boneData" }
+				}
+			},
+			"required": ["id", "offset"]
 		}
 	},
 	"type": "object",
@@ -66,16 +88,9 @@
 			"type": "object",
 			"required": ["zeroCoordinate", "sun"]
 		},
-		"bones": {
+		"bones": { 
 			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"parentIndex": { "$ref": "#/$defs/indexValue" },
-					"length": { "$ref": "#/$defs/positiveNumber"},
-					"rotation": { "$ref": "#/$defs/rotation" }
-				}
-			}
+			"items": { "$ref": "#/$defs/boneData" }
 		},
 		"interpolationMode": {
 			"enum": [
@@ -145,6 +160,10 @@
 							"width": { "$ref": "#/$defs/pixelCount" },
 							"height": { "$ref": "#/$defs/pixelCount" }
 						}
+					},
+					"parentBone": {
+						"description": "ID of the bone by which this sensors movement is controlled",
+						"type": "string"
 					}
 				}
 			}
