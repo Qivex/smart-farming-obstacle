@@ -77,6 +77,12 @@
 				}
 			}
 		},
+		"interpolationMode": {
+			"enum": [
+				"last",
+				"linear"
+			]
+		},
 		"animationMapping": {
 			"type": "array",
 			"items": {
@@ -120,7 +126,7 @@
 				}
 			}
 		},
-		"cameras": {
+		"sensors": {
 			"type": "array",
 			"items": {
 				"type": "object",
@@ -142,7 +148,18 @@
 					}
 				}
 			}
+		},
+		"output": {
+			"type": "object",
+			"properties": {
+				"exportPath": {
+					"type": "string"
+				},
+				"generateAlphaMaps": {
+					"type": "boolean"
+				}
+			}
 		}
 	},
-	"required": ["scene", "bones", "cameras"]
+	"required": ["scene", "bones", "sensors"]
 }

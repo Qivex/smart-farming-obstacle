@@ -7,3 +7,5 @@ pyvenv.cfg
 __pycache__/
 # Helper scripts
 *.bat
+# Test outputs
+test/*/*

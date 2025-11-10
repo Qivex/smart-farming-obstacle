@@ -1,5 +1,5 @@
 {
-	"$schema": "../schema/generator.config.schema.json",
+	"$schema": "../src/schema/generator.config.schema.json",
 	"scene": {
 		"zeroCoordinate": [54,16,120],
 		"sun": {}

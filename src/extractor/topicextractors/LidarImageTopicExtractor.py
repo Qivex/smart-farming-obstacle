@@ -35,7 +35,7 @@ class LidarImageTopicExtractor(ImageTopicExtractor):
 			offset = bpp * pixel
 			# Important: Offsets might differ -> See message.fields
 			pos_bytes = data[offset:offset+12]
-			[x,y,z] = unpack("3f", bytearray(pos_bytes))
+			[x,y,z] = unpack("3f", bytearray(pos_bytes))	# Any value with exp == 0xFF and frac != 0 is considered NaN ()
 			depth = sqrt(x*x + y*y + z*z)
 			clipped_depth_values.append(_clip_depth(depth, VIEWPORT_CLIP_NEAR, VIEWPORT_CLIP_FAR))
 			pixel += 1
