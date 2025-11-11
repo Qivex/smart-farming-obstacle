@@ -31,12 +31,36 @@ from core import load_config
 from schema import generator_config_schema
 
 from generator.armature import create_armature
+from generator.compositing import LidarSceneCompositor
 
 
 def main():
 	config = load_config(schema=generator_config_schema)
 	# Todo: Check config content for additional details not verifiable with schema
-	create_armature(config["bones"])
+	
+	# Test armature creation
+	# create_armature(config["bones"])
+
+	# Test lidar compositing
+	scene = bpy.context.scene
+	scene.eevee.taa_render_samples = 1
+	scene.render.resolution_x = 171
+	scene.render.resolution_y = 128
+	for i in range(3):
+		bpy.ops.scene.new(type="FULL_COPY")
+		scene = bpy.context.scene
+		scene.name = f"lidar_part{i}"
+		# Different Camera FOVs to distinct scenes
+		camera_data = scene.camera.data
+		print(camera_data)
+		camera_data.lens_unit = "FOV"
+		camera_data.angle = 1 + 0.25*i
+	bpy.ops.scene.new(type="EMPTY")
+	panorama_scene = bpy.context.scene
+	panorama_scene.name = "lidar"
+	panorama_scene.render.resolution_x = 512
+	test_compositor = LidarSceneCompositor(panorama_scene)
+	# test_compositor.set_movie_clip(None)
 
 
 if __name__ == "__main__":
