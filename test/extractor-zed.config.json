@@ -1,19 +1,12 @@
 {
 	"$schema": "../src/schema/extractor.config.schema.json",
-	"recordingPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Data/rosbag2_2025_05_12-14_18_46/rosbag2_2025_05_12-14_18_46_0.mcap",
-	"exportPath": "test-output",
-	"startTime": 1747052415,
-	"endTime": 1747052425,
+	"recordingPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Data/Pascal/zed_only2/zed_only_0.mcap",
+	"exportPath": "export-zed",
 	"topics": [
 		{
 			"alias": "zed_left",
 			"path": "/zed/zed_node/left_raw/image_raw_color/compressed",
 			"schema": "sensor_msgs/msg/CompressedImage"
-		},
-		{
-			"alias": "ouster",
-			"path": "/ouster/points",
-			"schema": "sensor_msgs/msg/PointCloud2"
 		},
 		{
 			"alias": "gps",

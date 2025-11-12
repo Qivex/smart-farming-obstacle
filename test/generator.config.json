@@ -1,12 +1,17 @@
 {
 	"$schema": "../src/schema/generator.config.schema.json",
 	"scene": {
+		"obstacleID": "Cube",
 		"zeroCoordinate": [54,16,120],
 		"sun": {}
 	},
 	"inputPaths": {
 		"data": "odom.json",
 		"images": "images/"
+	},
+	"output": {
+		"exportPath": "generator-output",
+		"generateAlphaMaps": true
 	},
 	"sensors": [
 		{
@@ -36,9 +41,57 @@
 		{
 			"odomSource": ["pos", "x"],
 			"animTarget": {
-				"boneIndex": 0,
+				"boneID": "branch1",
 				"dataPath": "location",
 				"dataIndex": 0
+			}
+		},
+		{
+			"odomSource": ["pos", "y"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "location",
+				"dataIndex": 1
+			}
+		},
+		{
+			"odomSource": ["pos", "z"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "location",
+				"dataIndex": 2
+			}
+		},
+		{
+			"odomSource": ["rot", "w"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 0
+			}
+		},
+		{
+			"odomSource": ["rot", "x"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 1
+			}
+		},
+		{
+			"odomSource": ["rot", "y"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 2
+			}
+		},
+		{
+			"odomSource": ["rot", "z"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 3
 			}
 		}
 	]

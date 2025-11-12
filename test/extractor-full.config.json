@@ -1,0 +1,59 @@
+{
+	"$schema": "../src/schema/extractor.config.schema.json",
+	"recordingPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Data/rosbag2_2025_05_12-14_18_46/rosbag2_2025_05_12-14_18_46_0.mcap",
+	"exportPath": "export-full",
+	"startTime": 1747052415,
+	"endTime": 1747052425,
+	"topics": [
+		{
+			"alias": "zed_left",
+			"path": "/zed/zed_node/left_raw/image_raw_color/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "zed_right",
+			"path": "/zed/zed_node/right_raw/image_raw_color/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "cam_left",
+			"path": "/camera/side_left/image_raw/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "cam_right",
+			"path": "/camera/side_right/image_raw/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "cam_rleft",
+			"path": "/camera/rear_left/image_raw/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "cam_rmid",
+			"path": "/camera/rear_mid/image_raw/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "cam_rright",
+			"path": "/camera/rear_right/image_raw/compressed",
+			"schema": "sensor_msgs/msg/CompressedImage"
+		},
+		{
+			"alias": "ouster",
+			"path": "/ouster/points",
+			"schema": "sensor_msgs/msg/PointCloud2"
+		},
+		{
+			"alias": "gps",
+			"path": "/novatel/oem7/bestpos",
+			"schema": "novatel_oem7_msgs/msg/BESTPOS"
+		},
+		{
+			"alias": "zed_odom",
+			"path": "/zed/zed_node/odom",
+			"schema": "nav_msgs/msg/Odometry"
+		}
+	]
+}

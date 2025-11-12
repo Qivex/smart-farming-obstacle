@@ -28,8 +28,8 @@ def _create_bone(edit_bones, data, parent, parent_is_root=False):
 def create_armature(bone_config):
 	# Init default armature
 	bpy.ops.object.armature_add(enter_editmode=True)
-	armature = bpy.context.active_object.data
-	edit_bones = armature.edit_bones
+	armature = bpy.context.active_object
+	edit_bones = armature.data.edit_bones
 	# Remove default bone
 	edit_bones.remove(edit_bones.get("Bone"))
 	# Create root bone
@@ -39,3 +39,4 @@ def create_armature(bone_config):
 	# Create bone tree from config
 	for bone_data in bone_config:
 		_create_bone(edit_bones, bone_data, root_bone, True)
+	return armature

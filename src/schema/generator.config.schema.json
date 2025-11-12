@@ -86,7 +86,7 @@
 	"properties": {
 		"scene": {
 			"type": "object",
-			"required": ["zeroCoordinate", "sun"]
+			"required": ["zeroCoordinate", "sun", "obstacleID"]
 		},
 		"bones": { 
 			"type": "array",
@@ -113,9 +113,9 @@
 					"animTarget": {
 						"type": "object",
 						"properties": {
-							"boneIndex": {
+							"boneID": {
 								"description": "Animated bone",
-								"$ref": "#/$defs/indexValue"
+								"type": "string"
 							},
 							"dataPath": {
 								"description": "Path to animated bone data",
@@ -126,7 +126,7 @@
 								"$ref": "#/$defs/indexValue"
 							}
 						},
-						"required": ["boneIndex", "dataPath"],
+						"required": ["boneID", "dataPath"],
 						"if": {
 							"properties": {
 								"dataPath": {
@@ -138,7 +138,8 @@
 							"required": ["dataIndex"]
 						}
 					}
-				}
+				},
+				"required": ["odomSource", "animTarget"]
 			}
 		},
 		"sensors": {
@@ -177,8 +178,9 @@
 				"generateAlphaMaps": {
 					"type": "boolean"
 				}
-			}
+			},
+			"required": ["exportPath", "generateAlphaMaps"]
 		}
 	},
-	"required": ["scene", "bones", "sensors"]
+	"required": ["scene", "bones", "sensors", "output"]
 }

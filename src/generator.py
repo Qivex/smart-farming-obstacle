@@ -2,8 +2,11 @@
 # BLENDER SETUP #
 #################
 
-from sys import exit, path
+from math import floor
+from os import makedirs
 from os.path import dirname, realpath, join
+from sys import exit, path
+from time import time
 
 # Check if script run using Blender:
 try:
@@ -27,20 +30,47 @@ path.append(join(module_directory, "Lib", "site-packages"))
 # GENERATOR #
 #############
 
-from core import load_config
+from core import load_config, load_json
 from schema import generator_config_schema
 
-from generator.armature import create_armature
-from generator.compositing import LidarSceneCompositor
+from generator.animation.keyframes import create_animation2
+from generator.compositing import CameraSceneCompositor, LidarSceneCompositor
+from generator.scenes import BaseScene
 
 
 def main():
 	config = load_config(schema=generator_config_schema)
-	# Todo: Check config content for additional details not verifiable with schema
+	# Todo: Check config content for additional details not verifiable with schema (e.g. boneID's actually match)
 	
-	# Test armature creation
-	# create_armature(config["bones"])
+	# Copy Blender project to new file
+	try:
+		selected_directory = f'{realpath(config["output"]["exportPath"])}@{floor(time())}'
+		makedirs(selected_directory)
+	except Exception as e:
+		print(f"Error while creating output directory:\n\t{e}")
 
+	try:
+		bpy.ops.wm.save_as_mainfile(filepath=join(selected_directory, "project.blend"))
+	except Exception as e:
+		print(f"Error while creating project copy:\n\t{e}")
+	
+	# Shared scene setup & armature
+	base_scene = BaseScene(config)
+
+	# Shared compositing logic
+
+	# Seperate image source, animation & rendering for each sensor
+
+	# Render
+
+	
+	return
+	# Test animation
+	zed_odom_data = load_json("d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-zed@1762934416/zed_odom.json", "odom")
+	create_animation2(armature, config["animationMapping"], zed_odom_data)
+
+
+	return
 	# Test lidar compositing
 	scene = bpy.context.scene
 	scene.eevee.taa_render_samples = 1
