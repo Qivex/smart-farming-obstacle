@@ -30,11 +30,11 @@ path.append(join(module_directory, "Lib", "site-packages"))
 # GENERATOR #
 #############
 
-from core import load_config, load_json
+from common import load_config, load_json
 from schema import generator_config_schema
 
 from generator.animation.keyframes import create_animation2
-from generator.compositing import CameraSceneCompositor, LidarSceneCompositor
+from generator.compositing import CameraSceneCompositor, DepthSceneCompositor
 from generator.scenes import BaseScene
 
 
@@ -55,16 +55,21 @@ def main():
 		print(f"Error while creating project copy:\n\t{e}")
 	
 	# Shared scene setup & armature
-	base_scene = BaseScene(config)
+	base_scene = BaseScene("base_scene", bpy.context.scene)
+	armature = base_scene.create_armature(config["bones"])
+	base_scene.create_shadow_catcher(config["scene"]["obstacleID"])
 
 	# Shared compositing logic
+	DepthSceneCompositor(base_scene.scene, True)
+	
 
 	# Seperate image source, animation & rendering for each sensor
+	
 
 	# Render
 
 	
-	return
+	
 	# Test animation
 	zed_odom_data = load_json("d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-zed@1762934416/zed_odom.json", "odom")
 	create_animation2(armature, config["animationMapping"], zed_odom_data)

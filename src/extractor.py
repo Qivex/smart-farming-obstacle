@@ -7,7 +7,7 @@ from time import time
 from mcap.reader import make_reader
 from mcap_ros2.decoder import DecoderFactory
 
-from core import load_config
+from common import load_config
 from extractor import TopicExtractorFactory
 from schema import extractor_config_schema
 

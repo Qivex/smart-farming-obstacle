@@ -6,7 +6,7 @@ import imageio
 imageio.plugins.freeimage.download()	# Required for OpenEXR
 
 from . import ImageTopicExtractor
-from core.const import VIEWPORT_CLIP_NEAR, VIEWPORT_CLIP_FAR
+from common.const import VIEWPORT_CLIP_NEAR, VIEWPORT_CLIP_FAR, PANORAMA_SENSOR_PARTITION_AMOUNT
 
 def _clip_depth(value, near, far):
 	if value > far:
@@ -44,8 +44,13 @@ class LidarImageTopicExtractor(ImageTopicExtractor):
 		arr = np.array(clipped_depth_values, dtype="float32")
 		arr.shape = (height, width)
 
-		# Write image to folder
-		imageio.imwrite(self.get_image_path("exr"), arr, flags=5)	# From FreeImage.h: EXR_FLOAT = 1, EXR_ZIP = 4
+		# Split panorama into equal subdivided sections for easier rendering
+		section_width = int(width / PANORAMA_SENSOR_PARTITION_AMOUNT)
+		for section in range(PANORAMA_SENSOR_PARTITION_AMOUNT):
+			# Create subarray of section
+			subarr = arr[0:height, (section_width * section):(section_width * (section + 1))]
+			# Write image to folder
+			imageio.imwrite(self.get_image_path("exr", part=section), subarr, flags=5)	# From FreeImage.h: EXR_FLOAT = 1, EXR_ZIP = 4
 		
 		self.current_index += 1
 		

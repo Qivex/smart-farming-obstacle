@@ -3,7 +3,7 @@ from os.path import join
 from json import dumps
 
 from . import TopicExtractor
-from core.const import TIMEINFO_FILENAME, IMAGE_FILE_FORMATSTRING
+from common.const import TIMEINFO_FILENAME, IMAGE_FILE_FORMATSTRING, IMAGE_FILE_PART_FORMATSTRING
 
 class ImageTopicExtractor(TopicExtractor):
 	def __init__(self, id, export_root):
@@ -23,6 +23,9 @@ class ImageTopicExtractor(TopicExtractor):
 		with open(self.timeinfo_path, "w") as timeinfo_file:
 			timeinfo_file.write(dumps(self.timeinfo))
 
-	def get_image_path(self, format):
-		image_filename = IMAGE_FILE_FORMATSTRING.format(id=self.id, index=self.current_index, format=format)
+	def get_image_path(self, format, part=None):
+		if part is None:
+			image_filename = IMAGE_FILE_FORMATSTRING.format(id=self.id, index=self.current_index, format=format)
+		else:
+			image_filename = IMAGE_FILE_PART_FORMATSTRING.format(id=self.id, index=self.current_index, format=format, part=part)
 		return join(self.image_path, image_filename)

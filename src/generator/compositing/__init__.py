@@ -1,4 +1,3 @@
 from .SceneCompositor import SceneCompositor
 from .CameraSceneCompositor import CameraSceneCompositor
 from .DepthSceneCompositor import DepthSceneCompositor
-from .LidarSceneCompositor import LidarSceneCompositor

@@ -2,6 +2,7 @@ import bpy
 
 def create_animation2(armature, data_mapping, tracking_data):
 	# Pose bones only exist in pose mode
+	bpy.context.view_layer.objects.active = armature	# Active armature object required for pose mode
 	bpy.ops.object.mode_set(mode='POSE')
 	bones = armature.pose.bones
 

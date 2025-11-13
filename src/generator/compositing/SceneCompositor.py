@@ -48,8 +48,3 @@ class SceneCompositor(ABC):
 	@abstractmethod
 	def setup(self):
 		pass
-
-
-	@abstractmethod
-	def set_movie_clip(self, movie_clip):
-		pass

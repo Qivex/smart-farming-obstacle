@@ -4,7 +4,9 @@ from . import Scene
 from generator.armature import create_armature
 
 
-def create_shadow_catcher(obstacle_id):
+# Scene configuration & Bone Rigging
+class BaseScene(Scene):
+	def create_shadow_catcher(self, obstacle_id):
 		# Find obstacle
 		try:
 			obstacle_object = bpy.data.objects[obstacle_id]
@@ -20,11 +22,7 @@ def create_shadow_catcher(obstacle_id):
 		# Make shadow catcher
 		shadow_catcher = bpy.context.active_object
 		shadow_catcher.is_shadow_catcher = True
-
-
-# Scene configuration & Bone Rigging
-class BaseScene(Scene):
-	def __init__(self, config):
-		super().__init__("base_scene")
-		create_shadow_catcher(config["scene"]["obstacleID"])
-		create_armature(config["bones"])
+		return shadow_catcher
+	
+	def create_armature(self, bone_config):
+		return create_armature(bone_config)

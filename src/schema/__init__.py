@@ -1,6 +1,6 @@
 from os.path import realpath, dirname, join
 
-from core import load_json
+from common import load_json
 
 __dir = dirname(realpath(__file__))
 
