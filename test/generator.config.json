@@ -1,5 +1,9 @@
 {
 	"$schema": "../src/schema/generator.config.schema.json",
+	"render": {
+		"device": "GPU",
+		"samples": 1
+	},
 	"scene": {
 		"obstacleID": "Cube",
 		"zeroCoordinate": [54,16,120],

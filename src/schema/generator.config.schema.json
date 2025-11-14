@@ -84,6 +84,19 @@
 	},
 	"type": "object",
 	"properties": {
+		"render": {
+			"type": "object",
+			"properties": {
+				"device": {
+					"enum": ["CPU", "GPU"]
+				},
+				"samples": {
+					"type": "integer",
+					"minimum": 1
+				}
+			},
+			"required": ["device", "samples"]
+		},
 		"scene": {
 			"type": "object",
 			"required": ["zeroCoordinate", "sun", "obstacleID"]

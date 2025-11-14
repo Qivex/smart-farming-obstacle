@@ -18,10 +18,3 @@ class CameraSceneCompositor(SceneCompositor):
 
 		# Reference required when using alpha mask
 		self.render_node = render_node
-
-		# Reference required when setting movie clip
-		self.movie_node = movie_node
-	
-
-	def set_movie_clip(self, movie_clip):
-		self.movie_node.clip = movie_clip

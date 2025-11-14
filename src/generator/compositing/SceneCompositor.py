@@ -19,6 +19,7 @@ class SceneCompositor(ABC):
 		
 		# Enable created compositing logic
 		scene.render.use_compositing = True
+		scene.render.film_transparent = True
 
 
 	def setup_alpha(self):

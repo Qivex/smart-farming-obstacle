@@ -34,8 +34,7 @@ from common import load_config, load_json
 from schema import generator_config_schema
 
 from generator.animation.keyframes import create_animation2
-from generator.compositing import CameraSceneCompositor, DepthSceneCompositor
-from generator.scenes import BaseScene
+from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup
 
 
 def main():
@@ -55,12 +54,11 @@ def main():
 		print(f"Error while creating project copy:\n\t{e}")
 	
 	# Shared scene setup & armature
-	base_scene = BaseScene("base_scene", bpy.context.scene)
-	armature = base_scene.create_armature(config["bones"])
-	base_scene.create_shadow_catcher(config["scene"]["obstacleID"])
+	base_scene = BaseSceneSetup().create_scene(bpy.context.scene, "base_scene", config)
 
 	# Shared compositing logic
-	DepthSceneCompositor(base_scene.scene, True)
+	camera_base_scene = CameraSceneSetup().create_scene(base_scene, "camera_base_scene", config)
+	depth_base_scene = DepthSceneSetup().create_scene(base_scene, "depth_base_scene", config)
 	
 
 	# Seperate image source, animation & rendering for each sensor
@@ -69,7 +67,7 @@ def main():
 	# Render
 
 	
-	
+	return
 	# Test animation
 	zed_odom_data = load_json("d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-zed@1762934416/zed_odom.json", "odom")
 	create_animation2(armature, config["animationMapping"], zed_odom_data)
