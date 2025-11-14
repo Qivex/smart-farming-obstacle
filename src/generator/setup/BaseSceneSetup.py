@@ -14,9 +14,5 @@ class BaseSceneSetup(SceneSetup):
 		# Construct bone tree
 		create_armature(config["bones"])	# Note: Can't store reference to armature because it will break after FULL_COPY
 
-	
-	# TODO: This is required in SensorSceneSetup when animating armature
-	def get_armature(self):
-		for object in self.scene.objects:
-			if object.type == "ARMATURE":
-				return object
+		# Add all sensors
+		# TODO

@@ -4,3 +4,5 @@ from .BaseSceneSetup import BaseSceneSetup
 
 from .CameraSceneSetup import CameraSceneSetup
 from .DepthSceneSetup import DepthSceneSetup
+
+from .SensorSceneSetup import SensorSceneSetup

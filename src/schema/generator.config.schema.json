@@ -163,6 +163,9 @@
 					"id": {
 						"type": "string"
 					},
+					"type": {
+						"enum": ["camera", "lidar"]
+					},
 					"fov": {
 						"type": "number",
 						"exclusiveMinimum": 0,

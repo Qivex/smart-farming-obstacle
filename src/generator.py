@@ -34,7 +34,7 @@ from common import load_config, load_json
 from schema import generator_config_schema
 
 from generator.animation.keyframes import create_animation2
-from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup
+from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup, SensorSceneSetup
 
 
 def main():
@@ -61,8 +61,15 @@ def main():
 	depth_base_scene = DepthSceneSetup().create_scene(base_scene, "depth_base_scene", config)
 	
 
-	# Seperate image source, animation & rendering for each sensor
 	
+
+	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", "zed_left/zed_left-1.jpg")
+	example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", "ouster/ouster_part1-1.exr")
+
+	return
+	# Seperate image source, animation & rendering for each sensor
+	for sensor in config["sensors"]:
+		pass
 
 	# Render
 
