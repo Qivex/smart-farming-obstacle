@@ -36,6 +36,9 @@ from schema import generator_config_schema
 from generator.animation.keyframes import create_animation2
 from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup, SensorSceneSetup
 
+from generator.AnimationManager import AnimationManager
+from common import load_json
+
 
 def main():
 	config = load_config(schema=generator_config_schema)
@@ -65,6 +68,19 @@ def main():
 
 	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", "zed_left/zed_left-1.jpg")
 	example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", "ouster/ouster_part1-1.exr")
+
+
+	# TEST
+	am = AnimationManager("linear")
+	am.load_data_from_sources("d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-full@1763028961", ["gps.json", "zed_odom.json"])
+	am.set_mapping_config(config["animation"]["sourceMapping"])
+
+	required_timestamps = load_json("d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-full@1763028961/zed_left/timeinfo.json", "timestamps")
+	
+	values = am.interpolate_values(required_timestamps)
+
+	for entry in values.values():
+		print(len(entry))
 
 	return
 	# Seperate image source, animation & rendering for each sensor

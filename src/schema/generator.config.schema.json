@@ -111,6 +111,98 @@
 				"linear"
 			]
 		},
+		"animation": {
+			"type": "object",
+			"properties": {
+				"sourceMapping": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"file": {
+								"type": "string"
+							},
+							"values": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"jsonPath": {
+											"type": "array",
+											"items": {
+												"type": "string"
+											}
+										},
+										"assignedKey": {
+											"type": "string"
+										}
+									},
+									"required": ["jsonPath", "assignedKey"]
+								}
+							}
+						},
+						"required": ["file", "values"]
+					}
+				},
+				"calculatedValues": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"key": {
+								"type": "string"
+							},
+							"expression": {
+								"type": "string",
+								"pattern": "^lambda data, index: "
+							}
+						},
+						"required": ["key", "expression"]
+					}
+				},
+				"boneMapping": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"sourceKey": {
+								"type": "string"
+							},
+							"animationTarget": {
+								"type": "object",
+								"properties": {
+									"boneID": {
+										"description": "Animated bone",
+										"type": "string"
+									},
+									"dataPath": {
+										"description": "Path to animated bone data",
+										"enum": ["rotation_quaternion", "location"]
+									},
+									"dataIndex": {
+										"description": "Array index of data (only required if dataPath references an array)",
+										"$ref": "#/$defs/indexValue"
+									}
+								},
+								"required": ["boneID", "dataPath"],
+								"if": {
+									"properties": {
+										"dataPath": {
+											"enum": ["rotation_quaternion", "location"]
+										}
+									}
+								},
+								"then": {
+									"required": ["dataIndex"]
+								}
+							}
+						},
+						"required": ["sourceKey", "animationTarget"]
+					}
+				}
+			},
+			"required": ["sourceMapping", "calculatedValues", "boneMapping"]
+		},
 		"animationMapping": {
 			"type": "array",
 			"items": {

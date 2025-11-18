@@ -9,10 +9,6 @@
 		"zeroCoordinate": [54,16,120],
 		"sun": {}
 	},
-	"inputPaths": {
-		"data": "odom.json",
-		"images": "images/"
-	},
 	"output": {
 		"exportPath": "generator-output",
 		"generateAlphaMaps": true
@@ -27,20 +23,66 @@
 	],
 	"bones": [
 		{
-			"id": "branch1",
-			"offset": {"x": 1, "y": 1, "z": 1}
-		},
-		{
-			"id": "branch2",
-			"offset": {"x": 0, "y": -1, "z": 0},
+			"id": "sensor_rig",
+			"offset": {"x": 0, "y": -1.36, "z": 2.896},
 			"children": [
 				{
-					"id": "branch2a",
-					"offset": {"x": 0, "y": 0, "z": 1}
+					"id": "os_sensor",
+					"offset": {"x": 0, "y": 1.611, "z": 0.305}
 				}
 			]
 		}
 	],
+	"animation": {
+		"sourceMapping": [
+			{
+				"file": "gps.json",
+				"values": [
+					{
+						"jsonPath": ["lat"],
+						"assignedKey": "gps_latitude"
+					},
+					{
+						"jsonPath": ["lon"],
+						"assignedKey": "gps_longitude"
+					}
+				]
+			},
+			{
+				"file": "zed_odom.json",
+				"values": [
+					{
+						"jsonPath": ["pos", "x"],
+						"assignedKey": "zed_pos_x"
+					}
+				]
+			}
+		],
+		"calculatedValues": [
+			{
+				"key": "example",
+				"expression": "lambda data, index: data['gps_latitude'][index] + data['gps_longitude'][index]"
+			}
+		],
+		"boneMapping": [
+			{
+				"sourceKey": "gps_lat",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 0
+				}
+			},
+			{
+				"sourceKey": "gps_lat",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 1
+				}
+			}
+		]
+	},
 	"animationMapping": [
 		{
 			"odomSource": ["pos", "x"],
