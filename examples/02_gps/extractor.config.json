@@ -1,7 +1,7 @@
 {
-	"$schema": "../src/schema/extractor.config.schema.json",
+	"$schema": "../../src/schema/extractor.config.schema.json",
 	"recordingPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Data/rosbag2_2025_05_12-14_18_46/rosbag2_2025_05_12-14_18_46_0.mcap",
-	"exportPath": "export-full",
+	"exportPath": "export",
 	"startTime": 1747052415,
 	"endTime": 1747052425,
 	"topics": [

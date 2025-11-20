@@ -3,12 +3,11 @@ import bpy
 from . import SceneSetup
 
 class SensorSceneSetup(SceneSetup):
-	def setup(self, sensor_path):
-		# TEMP
-		image_root = "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-full@1763028961"
-		
-		# TEMP
-		sensor_id = sensor_path
+	def setup(self, config):
+		# From config
+		image_root = config["root"]
+		sensor_path = config["img"]
+		sensor_id = config["id"]
 
 		self.set_image_source(f"{image_root}/{sensor_path}")
 		

@@ -64,13 +64,25 @@ def main():
 	depth_base_scene = DepthSceneSetup().create_scene(base_scene, "depth_base_scene", config)
 	
 
-	
+	# Examples
+	cam_config = {
+		"root": config["dataPath"],
+		"img": "zed_left/zed_left-1.jpg",
+		"id": "zed_left"
+	}
 
-	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", "zed_left/zed_left-1.jpg")
-	example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", "ouster/ouster_part1-1.exr")
+	lidar_config = {
+		"root": config["dataPath"],
+		"img": "ouster/ouster_part1-1.exr",
+		"id": "ouster"
+	}
+
+	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", cam_config)
+	example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", lidar_config)
 
 
 	# TEST
+	return
 	am = AnimationManager("linear")
 	am.load_data_from_sources("d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/test/export-full@1763028961", ["gps.json", "zed_odom.json"])
 	am.set_mapping_config(config["animation"]["sourceMapping"])

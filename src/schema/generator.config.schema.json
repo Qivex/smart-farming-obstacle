@@ -74,6 +74,10 @@
 			"properties": {
 				"id": { "type": "string" },
 				"offset": { "$ref": "#/$defs/offset" },
+				"childRotation": {
+					"$ref": "#/$defs/rotation",
+					"description": "Additional rotation to all child bones relative to self. Equivalent to transform frame rotation in Rosbag."
+				},
 				"children": {
 					"type": "array",
 					"items": { "$ref": "#/$defs/boneData" }

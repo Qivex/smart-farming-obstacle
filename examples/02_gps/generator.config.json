@@ -1,0 +1,197 @@
+{
+	"$schema": "../../src/schema/generator.config.schema.json",
+	"render": {
+		"device": "GPU",
+		"samples": 1
+	},
+	"scene": {
+		"obstacleID": "Cube",
+		"zeroCoordinate": [54,16,120],
+		"sun": {}
+	},
+	"dataPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/02_gps/export@1763642735",
+	"output": {
+		"exportPath": "render",
+		"generateAlphaMaps": true
+	},
+	"sensors": [
+		{
+			"id": "zed_left",
+			"type": "camera",
+			"fov": 110,
+			"parentBone": "branch2a"
+		}
+	],
+	"bones": [
+		{
+			"id": "sensorrig",
+			"offset": {"x": 0.0, "y": -1.35969, "z": 2.89559},
+			"childRotation": {"x": 0.0, "y": 0.0, "z": 0.7071068070684596, "w": 0.7071067553046345},
+			"children": [
+				{
+					"id": "camera/rear_left",
+					"offset": {"x": 0.18638379, "y": 0.740865, "z": 0.0},
+					"childRotation": {"x": 0.6644630488061801, "y": 0.2418447712350789, "z": 0.24184475353080798, "w": 0.6644630001640957}
+				},
+				{
+					"id": "camera/rear_mid",
+					"offset": {"x": 0.18638379, "y": 0.0, "z": 0.0},
+					"childRotation": {"x": 0.24184475581614506, "y": 0.664463054418213, "z": 0.664463005776128, "w": 0.24184473811187532}
+				},
+				{
+					"id": "camera/rear_right",
+					"offset": {"x": 0.18638379, "y": -0.740865, "z": 0.0},
+					"childRotation": {"x": 0.24184475581614506, "y": 0.664463054418213, "z": 0.664463005776128, "w": 0.24184473811187532}
+				},
+				{
+					"id": "camera/side_left",
+					"offset": {"x": 0.7851372, "y": 0.8414958, "z": 0.0},
+					"childRotation": {"x": 0.7071068070684596, "y": 0.0, "z": 0.0, "w": 0.7071067553046345}
+				},
+				{
+					"id": "camera/side_right",
+					"offset": {"x": 0.7851372, "y": -0.8414958, "z": 0.0},
+					"childRotation": {"x": 1.6408486525592004e-08, "y": 0.7071068070684595, "z": 0.7071067553046344, "w": 1.6408485324407094e-08}
+				},
+				{
+					"id": "os_sensor",
+					"offset": {"x": 1.6107047, "y": -2.168e-06, "z": 0.30456617},
+					"childRotation": {"x": 0.03224294426688673, "y": 0.3824503286559282, "z": -0.013355465497514265, "w": 0.9233167225807836},
+					"children": [
+						{
+							"id": "os_lidar",
+							"offset": {"x": 0.0, "y": 0.0, "z": 0.038195},
+							"childRotation": {"x": 0.0, "y": 0.0, "z": 1.0, "w": 0.0},
+							"children": [
+								{
+									"id": "zed_left",
+									"offset": {"x": -0.0340776, "y": -0.061614, "z": 0.132995},
+									"childRotation": {"x": 0.29323244094848633, "y": 0.24763408303260803, "z": 0.6623271107673645, "w": 0.6434399485588074},
+									"children": [
+										{
+											"id": "zed_right",
+											"offset": {"x": 0.12, "y": 0, "z": 0}
+										}
+									]
+								}
+							]
+						},
+						{
+							"id": "os_imu",
+							"offset": {"x": -0.002441, "y": -0.009725, "z": 0.007533000000000001},
+							"childRotation": {"x": 0.0, "y": 0.0, "z": 0.0, "w": 1.0}
+						}
+					]
+				}
+			]
+		}
+	],
+	"animation": {
+		"sourceMapping": [
+			{
+				"file": "gps.json",
+				"values": [
+					{
+						"jsonPath": ["lat"],
+						"assignedKey": "gps_latitude"
+					},
+					{
+						"jsonPath": ["lon"],
+						"assignedKey": "gps_longitude"
+					}
+				]
+			},
+			{
+				"file": "zed_odom.json",
+				"values": [
+					{
+						"jsonPath": ["pos", "x"],
+						"assignedKey": "zed_pos_x"
+					}
+				]
+			}
+		],
+		"calculatedValues": [
+			{
+				"key": "example",
+				"expression": "lambda data, index: data['gps_latitude'][index] + data['gps_longitude'][index]"
+			}
+		],
+		"boneMapping": [
+			{
+				"sourceKey": "gps_lat",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 0
+				}
+			},
+			{
+				"sourceKey": "gps_lat",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 1
+				}
+			}
+		]
+	},
+	"animationMapping": [
+		{
+			"odomSource": ["pos", "x"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "location",
+				"dataIndex": 0
+			}
+		},
+		{
+			"odomSource": ["pos", "y"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "location",
+				"dataIndex": 1
+			}
+		},
+		{
+			"odomSource": ["pos", "z"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "location",
+				"dataIndex": 2
+			}
+		},
+		{
+			"odomSource": ["rot", "w"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 0
+			}
+		},
+		{
+			"odomSource": ["rot", "x"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 1
+			}
+		},
+		{
+			"odomSource": ["rot", "y"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 2
+			}
+		},
+		{
+			"odomSource": ["rot", "z"],
+			"animTarget": {
+				"boneID": "branch1",
+				"dataPath": "rotation_quaternion",
+				"dataIndex": 3
+			}
+		}
+	]
+}
