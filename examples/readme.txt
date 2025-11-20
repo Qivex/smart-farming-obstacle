@@ -10,4 +10,5 @@ How to use:
 5) Start "run-extractor.bat", this will create a new folder "export@<timestamp>"
 6) In both "generator.config.json" files set property "dataFolder" to the path of this new folder
 7) Install Blender and adjust BLENDER_PATH in "run-generator.bat" (optional: remove "--background" flag for GUI)
+8) Select the obstacle from any of the available scenes. Adjust path to .blend project in "run-generator.bat" accordingly.
 8) Start "run-generator.bat", this will create a new folder "render@<timestamp>" (might take several minutes depending on hardware)

@@ -1,17 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$defs": {
-		"extractableTopicSchemas": {
-			"enum": [
-				"nav_msgs/msg/Odometry",
-				"novatel_oem7_msgs/msg/BESTPOS",
-				"sensor_msgs/msg/CompressedImage",
-				"sensor_msgs/msg/Imu",
-				"sensor_msgs/msg/PointCloud2"
-			]
-		}
-	},
 	"type": "object",
+	"required": ["recordingPath", "exportPath", "topics"],
 	"properties": {
 		"recordingPath": {
 			"description": "Path to the recording from ROS",
@@ -34,6 +24,7 @@
 			"minLength": 1,
 			"items": {
 				"type": "object",
+				"required": ["alias", "path", "schema"],
 				"properties": {
 					"alias": {
 						"description": "Shortened identifier for each topic",
@@ -45,12 +36,16 @@
 					},
 					"schema": {
 						"description": "Schema of this topic",
-						"$ref": "#/$defs/extractableTopicSchemas"
+						"enum": [
+							"nav_msgs/msg/Odometry",
+							"novatel_oem7_msgs/msg/BESTPOS",
+							"sensor_msgs/msg/CompressedImage",
+							"sensor_msgs/msg/Imu",
+							"sensor_msgs/msg/PointCloud2"
+						]
 					}
-				},
-				"required": ["alias", "path", "schema"]
+				}
 			}
 		}
-	},
-	"required": ["recordingPath", "exportPath", "topics"]
+	}
 }

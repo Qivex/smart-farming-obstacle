@@ -5,14 +5,6 @@
 			"type": "integer",
 			"minimum": 0
 		},
-		"positiveNumber": {
-			"type": "number",
-			"minimum": 0
-		},
-		"pixelCount": {
-			"type": "integer",
-			"exclusiveMinimum": 0
-		},
 		"offset": {
 			"type": "object",
 			"properties": {
@@ -21,26 +13,6 @@
 				"z": { "type": "number" }
 			},
 			"required": ["x", "y", "z"]
-		},
-		"scaleValue": {
-			"type": "number",
-			"default": 1,
-			"exclusiveMinimum": 0
-		},
-		"scale": {
-			"description": "",
-			"anyOf": [
-				{ "$ref": "#/$defs/scaleValue" },
-				{
-					"type": "object",
-					"properties": {
-						"x": { "$ref": "#/$defs/scaleValue" },
-						"y": { "$ref": "#/$defs/scaleValue" },
-						"z": { "$ref": "#/$defs/scaleValue" }
-					},
-					"additionalProperties": false
-				}
-			]
 		},
 		"rotationValue": {
 			"type": "number",
@@ -57,16 +29,6 @@
 				"w": { "$ref": "#/$defs/rotationValue" }
 			},
 			"required": ["x", "y", "z", "w"]
-		},
-		"transform": {
-			"description": "",
-			"type": "object",
-			"properties": {
-				"offset": { "$ref": "#/$defs/offset" },
-				"scale": { "$ref": "#/$defs/scale" },
-				"rotation": { "$ref": "#/$defs/rotation" }
-			},
-			"required": ["offset", "scale", "rotation"]
 		},
 		"boneData": {
 			"description": "",
@@ -87,96 +49,140 @@
 		}
 	},
 	"type": "object",
+	"required": ["render", "scene", "bones", "animation", "sensors", "output"],
 	"properties": {
 		"render": {
+			"description": "Render settings",
 			"type": "object",
+			"required": ["device", "samples"],
 			"properties": {
 				"device": {
+					"description": "Render operation will be executed on this computing device",
 					"enum": ["CPU", "GPU"]
 				},
 				"samples": {
+					"description": "Number of calculated samples for lighting. Higher values greatly increase render time.",
 					"type": "integer",
 					"minimum": 1
 				}
-			},
-			"required": ["device", "samples"]
+			}
 		},
 		"scene": {
+			"description": "Scene settings",
 			"type": "object",
-			"required": ["zeroCoordinate", "sun", "obstacleID"]
+			"required": ["obstacleID", "sun"],
+			"properties": {
+				"obstacleID": {
+					"description": "Object name of the obstacle in the imported scene",
+					"type": "string"
+				},
+				"sun": {
+					"description": "Settings for virtual sun",
+					"type": "object",
+					"required": ["angle", "strength", "temperature"],
+					"properties": {
+						"angle": {
+							"description": "Sun angle",
+							"$ref": "#/$defs/rotation"
+						},
+						"strength": {
+							"description": "Brightness of the sun in W/m2",
+							"type": "number",
+							"default": 10
+						},
+						"temperature": {
+							"description": "Sun light color based on temperature",
+							"type": "number",
+							"minimum": 800,
+							"maximum": 20000,
+							"default": 6500
+						}
+					}
+				}
+			}
 		},
 		"bones": { 
+			"description": "Hierarchy of connected bones",
 			"type": "array",
 			"items": { "$ref": "#/$defs/boneData" }
 		},
-		"interpolationMode": {
-			"enum": [
-				"last",
-				"linear"
-			]
-		},
 		"animation": {
+			"description": "Animation setup",
 			"type": "object",
+			"required": ["sourceMapping", "boneMapping"],
 			"properties": {
 				"sourceMapping": {
+					"description": "Assign keys to (nested) values from all data files",
 					"type": "array",
 					"items": {
 						"type": "object",
+						"required": ["file", "values"],
 						"properties": {
 							"file": {
+								"description": "Original file containing the desired value",
 								"type": "string"
 							},
 							"values": {
+								"description": "All values from the file",
 								"type": "array",
 								"items": {
 									"type": "object",
+									"required": ["jsonPath", "assignedKey"],
 									"properties": {
 										"jsonPath": {
+											"description": "Array of keys in order to reach the value",
 											"type": "array",
 											"items": {
 												"type": "string"
 											}
 										},
 										"assignedKey": {
+											"description": "Key under which this value will be stored",
 											"type": "string"
 										}
-									},
-									"required": ["jsonPath", "assignedKey"]
+									}
 								}
 							},
 							"calculatedValues": {
+								"description": "Values calculated from those in the file",
 								"type": "array",
 								"items": {
 									"type": "object",
+									"required": ["key", "expression"],
 									"properties": {
 										"key": {
+											"description": "Assigned key. Calculated values are stored in a 'calculated' object in original data.",
 											"type": "string"
 										},
 										"expression": {
+											"description": "Python lambda function with parameters data & index to calculate the value. May access previous indices e.g. for difference calculations.",
 											"type": "string",
 											"pattern": "^lambda data, index: "
 										}
-									},
-									"required": ["key", "expression"]
+									}
 								}
 							}
-						},
-						"required": ["file", "values"]
+						}
 					}
 				},
 				"boneMapping": {
+					"description": "Link animation values with bones to be animated",
 					"type": "array",
 					"items": {
 						"type": "object",
+						"required": ["valueKey", "animationTarget"],
 						"properties": {
 							"valueKey": {
+								"description": "Key of stored value (not path in file!)",
 								"type": "string"
 							},
 							"animationTarget": {
+								"description": "What gets animated",
 								"type": "object",
+								"required": ["boneID", "dataPath"],
 								"properties": {
 									"boneID": {
-										"description": "Animated bone",
+										"description": "Name of animated bone",
 										"type": "string"
 									},
 									"dataPath": {
@@ -188,7 +194,6 @@
 										"$ref": "#/$defs/indexValue"
 									}
 								},
-								"required": ["boneID", "dataPath"],
 								"if": {
 									"properties": {
 										"dataPath": {
@@ -200,79 +205,30 @@
 									"required": ["dataIndex"]
 								}
 							}
-						},
-						"required": ["valueKey", "animationTarget"]
+						}
 					}
 				}
-			},
-			"required": ["sourceMapping", "boneMapping"]
-		},
-		"animationMapping": {
-			"type": "array",
-			"items": {
-				"type": "object",
-				"properties": {
-					"odomSource": {
-						"description": "Path to animation data",
-						"type": "array",
-						"items": {
-							"type": "string"
-						}
-					},
-					"animTarget": {
-						"type": "object",
-						"properties": {
-							"boneID": {
-								"description": "Animated bone",
-								"type": "string"
-							},
-							"dataPath": {
-								"description": "Path to animated bone data",
-								"enum": ["rotation_quaternion", "location"]
-							},
-							"dataIndex": {
-								"description": "Array index of data (only required if dataPath references an array)",
-								"$ref": "#/$defs/indexValue"
-							}
-						},
-						"required": ["boneID", "dataPath"],
-						"if": {
-							"properties": {
-								"dataPath": {
-									"enum": ["rotation_quaternion", "location"]
-								}
-							}
-						},
-						"then": {
-							"required": ["dataIndex"]
-						}
-					}
-				},
-				"required": ["odomSource", "animTarget"]
 			}
 		},
 		"sensors": {
+			"description": "List of sensors generating a rendered image",
 			"type": "array",
 			"items": {
 				"type": "object",
+				"required": ["id", "type", "fov", "parentBone"],
 				"properties": {
 					"id": {
+						"description": "Unique identifier for the sensor. Also is used for the scene name.",
 						"type": "string"
 					},
 					"type": {
 						"enum": ["camera", "lidar"]
 					},
 					"fov": {
+						"description": "Field of View",
 						"type": "number",
 						"exclusiveMinimum": 0,
 						"exclusiveMaximum": 180
-					},
-					"resolution": {
-						"type": "object",
-						"properties": {
-							"width": { "$ref": "#/$defs/pixelCount" },
-							"height": { "$ref": "#/$defs/pixelCount" }
-						}
 					},
 					"parentBone": {
 						"description": "ID of the bone by which this sensors movement is controlled",
@@ -283,16 +239,17 @@
 		},
 		"output": {
 			"type": "object",
+			"required": ["exportPath", "generateAlphaMaps"],
 			"properties": {
 				"exportPath": {
+					"description": "Folder name of generated output",
 					"type": "string"
 				},
 				"generateAlphaMaps": {
+					"description": "Create additional folder with alpha map of each output?",
 					"type": "boolean"
 				}
-			},
-			"required": ["exportPath", "generateAlphaMaps"]
+			}
 		}
-	},
-	"required": ["scene", "bones", "sensors", "output"]
+	}
 }

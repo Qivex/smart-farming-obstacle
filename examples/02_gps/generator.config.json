@@ -5,11 +5,14 @@
 		"samples": 1
 	},
 	"scene": {
-		"obstacleID": "Cube",
-		"zeroCoordinate": [54,16,120],
-		"sun": {}
+		"obstacleID": "obstacle",
+		"sun": {
+			"angle": {"x": 0.55, "y": 0.76, "z": 0.19, "w": 0.3},
+			"strength": 10,
+			"temperature": 6500
+		}
 	},
-	"dataPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/02_gps/export@1763642735",
+	"dataPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/02_gps/export@1763669336",
 	"output": {
 		"exportPath": "render",
 		"generateAlphaMaps": true
@@ -102,15 +105,23 @@
 				],
 				"calculatedValues": [
 					{
+						"key": "x",
+						"expression": "lambda data, index: (data[index]['lat'] - 51.2623089) / 0.000009"
+					},
+					{
+						"key": "y",
+						"expression": "lambda data, index: (data[index]['lon'] - 12.4952893) / 0.0000145"
+					},
+					{
 						"key": "direction",
-						"expression": "lambda data, index: math.atan2(data[index]['lat'] - data[index-1]['lat'], data[index]['lon'] - data[index-1]['lon']) if index > 0 else 0"
+						"expression": "lambda data, index: math.atan2(data[index-1]['lat'] - data[index]['lat'], data[index-1]['lon'] - data[index]['lon']) if index > 0 else 0"
 					}
 				]
 			}
 		],
 		"boneMapping": [
 			{
-				"valueKey": "gps_latitude",
+				"valueKey": "x",
 				"animationTarget": {
 					"boneID": "root",
 					"dataPath": "location",
@@ -118,11 +129,11 @@
 				}
 			},
 			{
-				"valueKey": "gps_longitude",
+				"valueKey": "y",
 				"animationTarget": {
 					"boneID": "root",
 					"dataPath": "location",
-					"dataIndex": 1
+					"dataIndex": 2
 				}
 			},
 			{
@@ -134,63 +145,5 @@
 				}
 			}
 		]
-	},
-	"animationMapping": [
-		{
-			"odomSource": ["pos", "x"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "location",
-				"dataIndex": 0
-			}
-		},
-		{
-			"odomSource": ["pos", "y"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "location",
-				"dataIndex": 1
-			}
-		},
-		{
-			"odomSource": ["pos", "z"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "location",
-				"dataIndex": 2
-			}
-		},
-		{
-			"odomSource": ["rot", "w"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "rotation_quaternion",
-				"dataIndex": 0
-			}
-		},
-		{
-			"odomSource": ["rot", "x"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "rotation_quaternion",
-				"dataIndex": 1
-			}
-		},
-		{
-			"odomSource": ["rot", "y"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "rotation_quaternion",
-				"dataIndex": 2
-			}
-		},
-		{
-			"odomSource": ["rot", "z"],
-			"animTarget": {
-				"boneID": "branch1",
-				"dataPath": "rotation_quaternion",
-				"dataIndex": 3
-			}
-		}
-	]
+	}
 }
