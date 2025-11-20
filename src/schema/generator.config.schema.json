@@ -143,25 +143,25 @@
 									},
 									"required": ["jsonPath", "assignedKey"]
 								}
+							},
+							"calculatedValues": {
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"key": {
+											"type": "string"
+										},
+										"expression": {
+											"type": "string",
+											"pattern": "^lambda data, index: "
+										}
+									},
+									"required": ["key", "expression"]
+								}
 							}
 						},
 						"required": ["file", "values"]
-					}
-				},
-				"calculatedValues": {
-					"type": "array",
-					"items": {
-						"type": "object",
-						"properties": {
-							"key": {
-								"type": "string"
-							},
-							"expression": {
-								"type": "string",
-								"pattern": "^lambda data, index: "
-							}
-						},
-						"required": ["key", "expression"]
 					}
 				},
 				"boneMapping": {
@@ -169,7 +169,7 @@
 					"items": {
 						"type": "object",
 						"properties": {
-							"sourceKey": {
+							"valueKey": {
 								"type": "string"
 							},
 							"animationTarget": {
@@ -181,7 +181,7 @@
 									},
 									"dataPath": {
 										"description": "Path to animated bone data",
-										"enum": ["rotation_quaternion", "location"]
+										"enum": ["rotation_quaternion", "rotation_euler", "location"]
 									},
 									"dataIndex": {
 										"description": "Array index of data (only required if dataPath references an array)",
@@ -192,7 +192,7 @@
 								"if": {
 									"properties": {
 										"dataPath": {
-											"enum": ["rotation_quaternion", "location"]
+											"enum": ["rotation_quaternion", "rotation_euler", "location"]
 										}
 									}
 								},
@@ -201,11 +201,11 @@
 								}
 							}
 						},
-						"required": ["sourceKey", "animationTarget"]
+						"required": ["valueKey", "animationTarget"]
 					}
 				}
 			},
-			"required": ["sourceMapping", "calculatedValues", "boneMapping"]
+			"required": ["sourceMapping", "boneMapping"]
 		},
 		"animationMapping": {
 			"type": "array",

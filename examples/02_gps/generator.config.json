@@ -99,27 +99,18 @@
 						"jsonPath": ["lon"],
 						"assignedKey": "gps_longitude"
 					}
-				]
-			},
-			{
-				"file": "zed_odom.json",
-				"values": [
+				],
+				"calculatedValues": [
 					{
-						"jsonPath": ["pos", "x"],
-						"assignedKey": "zed_pos_x"
+						"key": "direction",
+						"expression": "lambda data, index: math.atan2(data[index]['lat'] - data[index-1]['lat'], data[index]['lon'] - data[index-1]['lon']) if index > 0 else 0"
 					}
 				]
 			}
 		],
-		"calculatedValues": [
-			{
-				"key": "example",
-				"expression": "lambda data, index: data['gps_latitude'][index] + data['gps_longitude'][index]"
-			}
-		],
 		"boneMapping": [
 			{
-				"sourceKey": "gps_lat",
+				"valueKey": "gps_latitude",
 				"animationTarget": {
 					"boneID": "root",
 					"dataPath": "location",
@@ -127,10 +118,18 @@
 				}
 			},
 			{
-				"sourceKey": "gps_lat",
+				"valueKey": "gps_longitude",
 				"animationTarget": {
 					"boneID": "root",
 					"dataPath": "location",
+					"dataIndex": 1
+				}
+			},
+			{
+				"valueKey": "direction",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "rotation_euler",
 					"dataIndex": 1
 				}
 			}

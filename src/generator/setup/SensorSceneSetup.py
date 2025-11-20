@@ -1,5 +1,8 @@
+from os.path import join
+
 import bpy
 
+from common import load_json
 from . import SceneSetup
 
 class SensorSceneSetup(SceneSetup):
@@ -8,8 +11,11 @@ class SensorSceneSetup(SceneSetup):
 		image_root = config["root"]
 		sensor_path = config["img"]
 		sensor_id = config["id"]
+		keyframe_generator = config["kg"]
 
-		self.set_image_source(f"{image_root}/{sensor_path}")
+		self.set_image_source(join(image_root, sensor_path))
+
+		timestamps = load_json(join(image_root, sensor_id, "timeinfo.json"), "timestamps")
 		
 		for object in self.scene.objects:
 			# Set active camera
@@ -18,7 +24,7 @@ class SensorSceneSetup(SceneSetup):
 			# Add animation to armature
 			if object.type == "ARMATURE":
 				armature = object
-				# TODO
+				keyframe_generator.create_animation(armature, timestamps)
 		
 
 	def set_image_source(self, path):
@@ -30,5 +36,4 @@ class SensorSceneSetup(SceneSetup):
 		self.scene.render.resolution_x, self.scene.render.resolution_y = movie_clip.size
 		# Match scene duration
 		self.scene.frame_end = movie_clip.frame_duration
-		
 		

@@ -1,6 +1,9 @@
+from os.path import join
+
 from numpy import interp
 
 from common import load_json
+from .ValueCalculator import ValueCalculator
 
 
 # Resolve JSON path (= array) in data
@@ -13,21 +16,31 @@ def value_from_json_path(data, jsonpath):
 	return target_value
 
 
-class AnimationManager:
-	def __init__(self, interpolation_mode):
-		self.interpolation_mode = interpolation_mode
-		pass
+class DataHandler:
+	def __init__(self, import_mapping):
+		self.import_mapping = import_mapping
 
-	def load_data_from_sources(self, path, files):
-		self.source_data = {filename: load_json(f"{path}/{filename}", "animation data") for filename in files}
-
-	def set_mapping_config(self, config):
-		self.key_mapping = config
+	def load_data(self, path):
+		data = {}
+		for entry in self.import_mapping:
+			filename = entry["file"]
+			# Load data
+			file_data = load_json(join(path, filename), "animation data")
+			if "calculatedValues" in entry:
+				# Calculate additional values from expressions
+				ValueCalculator(entry["calculatedValues"]).execute_calculations(file_data)
+				# Add these to mapping
+				for calculated_value in entry["calculatedValues"]:
+					entry["values"].append({
+						"jsonPath": ["calculated", calculated_value["key"]],
+						"assignedKey": calculated_value["key"]
+					})
+			data[filename] = file_data
+		self.source_data = data
 	
 	def interpolate_values(self, required_timestamps):
 		result = {}
-
-		for required_source in self.key_mapping:
+		for required_source in self.import_mapping:
 			source_name = required_source["file"]
 			if source_name not in self.source_data:
 				print(f"Data from file {required_source['file']} was not loaded!")
@@ -35,10 +48,8 @@ class AnimationManager:
 			data = self.source_data[source_name]
 			# Collect all XY-pairs (timestamp, value) for interpolation
 			provided_timestamps = [datapoint["time"] for datapoint in data]
-			print(f"{source_name} = {len(provided_timestamps)}")
 			for required_value in required_source["values"]:
 				provided_values = [value_from_json_path(datapoint, required_value["jsonPath"]) for datapoint in data]
 				# Interpolate values
 				result[required_value["assignedKey"]] = interp(required_timestamps, provided_timestamps, provided_values)
-		
 		return result

@@ -36,7 +36,7 @@ from schema import generator_config_schema
 from generator.animation.keyframes import create_animation2
 from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup, SensorSceneSetup
 
-from generator.AnimationManager import AnimationManager
+from generator.animation import DataHandler, KeyframeGenerator
 from common import load_json
 
 
@@ -64,17 +64,24 @@ def main():
 	depth_base_scene = DepthSceneSetup().create_scene(base_scene, "depth_base_scene", config)
 	
 
-	# Examples
+	# Shared animation data
+	data_handler = DataHandler(config["animation"]["sourceMapping"])
+	data_handler.load_data(config["dataPath"])
+	keyframe_generator = KeyframeGenerator(data_handler, config["animation"]["boneMapping"])
+
+	# Example Scenes
 	cam_config = {
 		"root": config["dataPath"],
 		"img": "zed_left/zed_left-1.jpg",
-		"id": "zed_left"
+		"id": "zed_left",
+		"kg": keyframe_generator
 	}
 
 	lidar_config = {
 		"root": config["dataPath"],
 		"img": "ouster/ouster_part1-1.exr",
-		"id": "ouster"
+		"id": "ouster",
+		"kg": keyframe_generator
 	}
 
 	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", cam_config)
