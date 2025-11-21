@@ -16,7 +16,7 @@ def value_from_json_path(data, jsonpath):
 	return target_value
 
 
-class DataHandler:
+class DataInterpolator:
 	def __init__(self, import_mapping):
 		self.import_mapping = import_mapping
 
@@ -26,15 +26,9 @@ class DataHandler:
 			filename = entry["file"]
 			# Load data
 			file_data = load_json(join(path, filename), "animation data")
+			# Calculate additional values from expressions
 			if "calculatedValues" in entry:
-				# Calculate additional values from expressions
 				ValueCalculator(entry["calculatedValues"]).execute_calculations(file_data)
-				# Add these to mapping
-				for calculated_value in entry["calculatedValues"]:
-					entry["values"].append({
-						"jsonPath": ["calculated", calculated_value["key"]],
-						"assignedKey": calculated_value["key"]
-					})
 			data[filename] = file_data
 		self.source_data = data
 	

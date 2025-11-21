@@ -101,6 +101,18 @@
 					{
 						"jsonPath": ["lon"],
 						"assignedKey": "gps_longitude"
+					},
+					{
+						"jsonPath": ["calculated", "x"],
+						"assignedKey": "x"
+					},
+					{
+						"jsonPath": ["calculated", "y"],
+						"assignedKey": "y"
+					},
+					{
+						"jsonPath": ["calculated", "direction"],
+						"assignedKey": "direction"
 					}
 				],
 				"calculatedValues": [

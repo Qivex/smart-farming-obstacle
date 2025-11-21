@@ -1,3 +1,3 @@
-from .DataHandler import DataHandler
+from .DataInterpolator import DataInterpolator
 from .KeyframeGenerator import KeyframeGenerator
 from .ValueCalculator import ValueCalculator

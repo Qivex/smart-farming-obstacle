@@ -2,8 +2,8 @@ import bpy
 
 
 class KeyframeGenerator:
-	def __init__(self, data_handler, bone_mapping):
-		self.data_handler = data_handler
+	def __init__(self, interpolator, bone_mapping):
+		self.interpolator = interpolator
 		self.bone_mapping = bone_mapping
 	
 	def create_animation(self, armature, timestamps):
@@ -13,7 +13,7 @@ class KeyframeGenerator:
 		bones = armature.pose.bones
 
 		# Generate required data
-		data = self.data_handler.interpolate_values(timestamps)
+		data = self.interpolator.interpolate_values(timestamps)
 
 		# Insert keyframes for each frame
 		for current_frame in range(len(timestamps)):
