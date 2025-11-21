@@ -30,13 +30,12 @@ path.append(join(module_directory, "Lib", "site-packages"))
 # GENERATOR #
 #############
 
-from common import load_config, load_json
+from common import load_config
 from schema import generator_config_schema
 
 from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup, SensorSceneSetup
 
 from generator.animation import DataInterpolator, KeyframeGenerator
-from common import load_json
 
 
 def main():
@@ -75,15 +74,12 @@ def main():
 		"kg": keyframe_generator
 	}
 
-	lidar_config = {
-		"root": config["dataPath"],
-		"img": "ouster/ouster_part1-1.exr",
-		"id": "ouster",
-		"kg": keyframe_generator
-	}
-
 	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", cam_config)
-	example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", lidar_config)
+	# example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", lidar_config)
+
+	# Before closing
+	bpy.ops.object.select_all(action="DESELECT")
+	bpy.ops.wm.save_mainfile()
 
 
 if __name__ == "__main__":

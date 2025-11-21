@@ -19,10 +19,20 @@
 	},
 	"sensors": [
 		{
-			"id": "zed_left",
+			"id": "cam_rleft",
 			"type": "camera",
 			"fov": 110,
-			"parentBone": "branch2a"
+			"parentBone": "camera/rear_left",
+			"fisheye": {
+				"mode": "FISHEYE_EQUISOLID",
+				"lens": 10
+			}
+		},
+		{
+			"id": "zed_left",
+			"type": "camera",
+			"fov": 80,
+			"parentBone": "zed_left"
 		}
 	],
 	"bones": [

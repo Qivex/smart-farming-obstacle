@@ -21,5 +21,8 @@ class SceneSetup(ABC):
 		# Execute concrete setup implementation
 		self.setup(config)
 
+		# Set scene to object mode
+		bpy.ops.object.mode_set(mode="OBJECT")
+
 		# Return created scene
 		return self.scene

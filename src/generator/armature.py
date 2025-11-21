@@ -43,8 +43,10 @@ def create_armature(bone_config):
 	# Create root bone
 	root_bone = edit_bones.new("root")
 	root_bone.head = (0,0,0)
-	root_bone.tail = (0,0,1)
+	root_bone.tail = (0,0,1)	# CHANGING THIS ALSO AFFECTS ANIMATION AXIS!!!
 	# Create bone tree from config
 	for bone_data in bone_config:
 		_create_bone(edit_bones, bone_data, root_bone, parent_is_root=True)
+	# Back to object mode
+	bpy.ops.object.mode_set(mode="OBJECT")
 	return armature

@@ -215,7 +215,7 @@
 			"type": "array",
 			"items": {
 				"type": "object",
-				"required": ["id", "type", "fov", "parentBone"],
+				"required": ["id", "type", "parentBone", "fov"],
 				"properties": {
 					"id": {
 						"description": "Unique identifier for the sensor. Also is used for the scene name.",
@@ -224,15 +224,42 @@
 					"type": {
 						"enum": ["camera", "lidar"]
 					},
+					"parentBone": {
+						"description": "ID of the bone by which this sensors movement is controlled",
+						"type": "string"
+					},
 					"fov": {
-						"description": "Field of View",
+						"description": "Field of View in degrees",
 						"type": "number",
 						"exclusiveMinimum": 0,
 						"exclusiveMaximum": 180
 					},
-					"parentBone": {
-						"description": "ID of the bone by which this sensors movement is controlled",
-						"type": "string"
+					"fisheye": {
+						"description": "Apply fisheye distortion to camera output",
+						"type": "object",
+						"required": ["mode"],
+						"properties": {
+							"mode": {
+								"description": "See https://docs.blender.org/api/current/bpy.types.Camera.html#bpy.types.Camera.panorama_type",
+								"enum": ["FISHEYE_EQUIDISTANT", "FISHEYE_EQUISOLID"]
+							},
+							"lens": {
+								"description": "Focal length of fisheye lens in mm",
+								"type": "number",
+								"minimum": 0.01,
+								"maximum": 100
+							}
+						},
+						"if": {
+							"properties": {
+								"mode": {
+									"const": "FISHEYE_EQUISOLID"
+								}
+							}
+						},
+						"then": {
+							"required": ["mode", "lens"]
+						}
 					}
 				}
 			}

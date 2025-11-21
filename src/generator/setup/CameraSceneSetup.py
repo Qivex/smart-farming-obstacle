@@ -28,6 +28,7 @@ def create_shadow_catcher(scene, obstacle_id):
 
 	# Make shadow catcher
 	shadow_catcher = bpy.context.active_object
+	shadow_catcher.name = "shadowcatcher"
 	shadow_catcher.is_shadow_catcher = True
 
 

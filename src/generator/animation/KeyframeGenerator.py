@@ -9,7 +9,7 @@ class KeyframeGenerator:
 	def create_animation(self, armature, timestamps):
 		# Pose bones only exist in pose mode
 		bpy.context.view_layer.objects.active = armature	# Active armature object required for pose mode
-		bpy.ops.object.mode_set(mode='POSE')
+		bpy.ops.object.mode_set(mode="POSE")
 		bones = armature.pose.bones
 
 		# Generate required data

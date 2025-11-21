@@ -1,0 +1,114 @@
+{
+	"$schema": "../../src/schema/generator.config.schema.json",
+	"render": {
+		"device": "GPU",
+		"samples": 1
+	},
+	"scene": {
+		"obstacleID": "obstacle",
+		"sun": {
+			"angle": {"x": 0.55, "y": 0.76, "z": 0.19, "w": 0.3},
+			"strength": 10,
+			"temperature": 6500
+		}
+	},
+	"dataPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/01_zed/export@1763642729",
+	"output": {
+		"exportPath": "render",
+		"generateAlphaMaps": true
+	},
+	"sensors": [
+		{
+			"id": "zed_left",
+			"type": "camera",
+			"fov": 110,
+			"parentBone": "attachment_zed_left"
+		}
+	],
+	"bones": [
+		{
+			"id": "angle_offset",
+			"offset": {"x": 0, "y": 0, "z": 0.5},
+			"childRotation": {"x": 0, "y": 0, "z": 0, "w": 1},
+			"children": [
+				{
+					"id": "angle_offset_back",
+					"offset": {"x": 0, "y": 0, "z": 0.5},
+					"childRotation": {
+						"x": -0.432624, "y": 0.309374, "z": 0.492588, "w": -0.688826,
+						"note": "=Euler(-2.02, pi, 1.9)"
+					},
+					"children": [
+						{
+							"id": "attachment_zed_left",
+							"offset": {"x": 1, "y": 0, "z": 0}
+						}
+					]
+				}
+			]
+		}
+	],
+	"animation": {
+		"sourceMapping": [
+			{
+				"file": "zed_odom.json",
+				"values": [
+					{
+						"jsonPath": ["pos", "x"],
+						"assignedKey": "pos_x"
+					},
+					{
+						"jsonPath": ["pos", "y"],
+						"assignedKey": "pos_y"
+					},
+					{
+						"jsonPath": ["pos", "z"],
+						"assignedKey": "pos_z"
+					},
+					{
+						"jsonPath": ["rot", "x"],
+						"assignedKey": "rot_x"
+					},
+					{
+						"jsonPath": ["rot", "y"],
+						"assignedKey": "rot_y"
+					},
+					{
+						"jsonPath": ["rot", "z"],
+						"assignedKey": "rot_z"
+					},
+					{
+						"jsonPath": ["rot", "w"],
+						"assignedKey": "rot_w"
+					}
+				]
+			}
+		],
+		"boneMapping": [
+			{
+				"valueKey": "pos_x",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 2
+				}
+			},
+			{
+				"valueKey": "pos_y",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 0
+				}
+			},
+			{
+				"valueKey": "pos_z",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "location",
+					"dataIndex": 1
+				}
+			}
+		]
+	}
+}
