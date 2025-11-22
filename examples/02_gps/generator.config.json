@@ -19,14 +19,10 @@
 	},
 	"sensors": [
 		{
-			"id": "cam_rleft",
-			"type": "camera",
-			"fov": 110,
-			"parentBone": "camera/rear_left",
-			"fisheye": {
-				"mode": "FISHEYE_EQUISOLID",
-				"lens": 10
-			}
+			"id": "ouster",
+			"type": "lidar",
+			"fov": 90,
+			"parentBone": "camera/rear_left"
 		},
 		{
 			"id": "zed_left",

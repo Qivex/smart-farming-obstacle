@@ -27,15 +27,13 @@ class SceneCompositor(ABC):
 		nodes = self.nodes
 		links = self.links
 		render_node = self.render_node
-		scene_name = self.scene.name
 
 		# Create required nodes
 		combine_node = nodes.new("CompositorNodeCombineColor")
 		file_node    = nodes.new("CompositorNodeOutputFile")
 
 		# Define file output
-		file_node.base_path = f"//alpha\\{scene_name}"	# Additional folder for alpha mask output
-		file_node.file_slots[0].path = f"{scene_name}-"
+		file_node.name = "Alpha"
 		file_node.format.file_format = "PNG"
 		file_node.format.compression = 100
 		file_node.format.color_mode = "BW"

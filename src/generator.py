@@ -31,6 +31,7 @@ path.append(join(module_directory, "Lib", "site-packages"))
 #############
 
 from common import load_config
+from common.const import PANORAMA_SENSOR_PARTITION_AMOUNT
 from schema import generator_config_schema
 
 from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup, SensorSceneSetup
@@ -66,15 +67,31 @@ def main():
 	interpolator.load_data(config["dataPath"])
 	keyframe_generator = KeyframeGenerator(interpolator, config["animation"]["boneMapping"])
 
-	# Example Scenes
-	cam_config = {
-		"sensor": config["sensors"][1],
-		"root": config["dataPath"],
-		"keyframes": keyframe_generator
-	}
-
-	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", cam_config)
-	# example_lidar_scene = SensorSceneSetup().create_scene(depth_base_scene, "example_lidar_scene", lidar_config)
+	# Create a scene for each sensor or part:
+	render_scenes = []
+	for sensor in config["sensors"]:
+		if sensor["type"] == "camera":
+			scene = SensorSceneSetup().create_scene(camera_base_scene, sensor["id"], {
+				"sensor": sensor,
+				"root": config["dataPath"],
+				"keyframes": keyframe_generator
+			})
+			render_scenes.append(scene)
+		elif sensor["type"] == "lidar":
+			# for part in range(PANORAMA_SENSOR_PARTITION_AMOUNT):
+			part = 1
+			scene = SensorSceneSetup().create_scene(depth_base_scene, f"{sensor['id']}_part{part}", {
+				"sensor": sensor,
+				"part": part,	# Only required for scenes with parts!
+				"root": config["dataPath"],
+				"keyframes": keyframe_generator,
+			})
+			render_scenes.append(scene)
+		
+	# TODO
+	for scene in render_scenes:
+		print(f"Rendering {scene.name}")
+		# bpy.ops.render.render(scene=scene.name, animation=True)
 
 	# Before closing
 	bpy.ops.object.select_all(action="DESELECT")

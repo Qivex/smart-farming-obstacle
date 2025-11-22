@@ -23,6 +23,17 @@ class SensorSceneSetup(SceneSetup):
 			sensor_image_file = IMAGE_FILE_PART_FORMATSTRING.format(id=sensor_id, index=1, part=config["part"] or 0, format="exr")
 		self.set_image_source(join(image_root, sensor_id, sensor_image_file))
 
+		# Set output path(s)
+		nodes = self.scene.node_tree.nodes
+		for node in nodes:
+			# Note: The API for these nodes will change in Blender 5.0!!
+			if node.bl_idname == "CompositorNodeOutputFile":
+				node.file_slots[0].path = f"{self.scene.name}-"
+				if node.name.startswith("Output"):
+					node.base_path = f"//render\\{sensor_id}"
+				elif node.name.startswith("Alpha"):
+					node.base_path = f"//alpha\\{sensor_id}"
+
 		# Find armature
 		for object in self.scene.objects:
 			if object.type == "ARMATURE":
