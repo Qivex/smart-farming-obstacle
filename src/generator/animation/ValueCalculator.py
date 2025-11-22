@@ -14,12 +14,9 @@ class ValueCalculator:
 	
 	def execute_calculations(self, data):
 		for index, value in enumerate(data):
-			calculated_values = {}
+			value["calculated"] = {}
 			for key, func in self.user_functions.items():
 				try:
-					calculated_values[key] = func(data, index)
+					value["calculated"][key] = func(data, index)
 				except Exception as e:
 					print(f'Error when calculating value "{key}" for index {index}:\n\t{e}')
-			value.update({"calculated": calculated_values})
-		return data
-

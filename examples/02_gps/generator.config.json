@@ -136,7 +136,7 @@
 					},
 					{
 						"key": "direction",
-						"expression": "lambda data, index: math.atan2(data[index-1]['lat'] - data[index]['lat'], data[index-1]['lon'] - data[index]['lon']) if index > 0 else 0"
+						"expression": "lambda data, index: math.atan2(data[index-1]['calculated']['x'] - data[index]['calculated']['x'], data[index-1]['calculated']['y'] - data[index]['calculated']['y']) if index > 0 else 0"
 					}
 				]
 			}
