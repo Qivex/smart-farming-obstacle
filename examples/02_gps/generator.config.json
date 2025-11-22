@@ -22,13 +22,24 @@
 			"id": "ouster",
 			"type": "lidar",
 			"fov": 90,
-			"parentBone": "camera/rear_left"
+			"parentBone": "camera/rear_left",
+			"rotationAxis": {
+				"x": 1,
+				"y": 0,
+				"z": 0
+			},
+			"firstAngle": 90
 		},
 		{
 			"id": "zed_left",
 			"type": "camera",
 			"fov": 80,
-			"parentBone": "zed_left"
+			"parentBone": "zed_left",
+			"rotationEuler": {
+				"x": -0.69,
+				"y": 0.1,
+				"z": -0.19
+			}
 		}
 	],
 	"bones": [

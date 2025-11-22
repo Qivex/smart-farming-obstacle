@@ -20,7 +20,7 @@
 			"maximum": 1
 		},
 		"rotation": {
-			"description": "Three-dimensional rotation",
+			"description": "Three-dimensional rotation quaternion",
 			"type": "object",
 			"properties": {
 				"x": { "$ref": "#/$defs/rotationValue" },
@@ -228,6 +228,18 @@
 						"description": "ID of the bone by which this sensors movement is controlled",
 						"type": "string"
 					},
+					"rotationEuler": {
+						"description": "Initial rotation (in world space!) before the camera is attached to the bone",
+						"$ref": "#/$defs/offset"
+					},
+					"rotationAxis": {
+						"description": "Vector used as rotation axis for all panorama sections",
+						"$ref": "#/$defs/offset"
+					},
+					"firstAngle": {
+						"description": "Angle of first sensor for panorama image relative to Vector(rotationAxis).orthogonal()",
+						"type": "number"
+					},
 					"fov": {
 						"description": "Field of View in degrees",
 						"type": "number",
@@ -261,7 +273,33 @@
 							"required": ["mode", "lens"]
 						}
 					}
-				}
+				},
+				"allOf": [
+					{
+						"if": {
+							"properties": {
+								"type": {
+									"const": "camera"
+								}
+							}
+						},
+						"then": {
+							"required": ["id", "type", "parentBone", "fov", "rotationEuler"]
+						}
+					},
+					{
+						"if": {
+							"properties": {
+								"type": {
+									"const": "lidar"
+								}
+							}
+						},
+						"then": {
+							"required": ["id", "type", "parentBone", "fov", "rotationAxis", "firstAngle"]
+						}
+					}
+				]
 			}
 		},
 		"output": {
