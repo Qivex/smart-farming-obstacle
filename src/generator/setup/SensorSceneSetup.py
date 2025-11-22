@@ -3,28 +3,37 @@ from os.path import join
 import bpy
 
 from common import load_json
+from common.const import IMAGE_FILE_FORMATSTRING, IMAGE_FILE_PART_FORMATSTRING
+from generator.camera import create_camera
 from . import SceneSetup
+
 
 class SensorSceneSetup(SceneSetup):
 	def setup(self, config):
 		# From config
+		sensor_config = config["sensor"]
 		image_root = config["root"]
-		sensor_path = config["img"]
-		sensor_id = config["id"]
-		keyframe_generator = config["kg"]
+		keyframe_generator = config["keyframes"]
 
-		self.set_image_source(join(image_root, sensor_path))
+		# Set path to images
+		sensor_id = sensor_config["id"]
+		if sensor_config["type"] == "camera":
+			sensor_image_file = IMAGE_FILE_FORMATSTRING.format(id=sensor_id, index=1, format="jpg")
+		elif sensor_config["type"] == "lidar":
+			sensor_image_file = IMAGE_FILE_PART_FORMATSTRING.format(id=sensor_id, index=1, part=config["part"] or 0, format="exr")
+		self.set_image_source(join(image_root, sensor_id, sensor_image_file))
 
-		timestamps = load_json(join(image_root, sensor_id, "timeinfo.json"), "timestamps")
-		
+		# Find armature
 		for object in self.scene.objects:
-			# Set active camera
-			if object.type == "CAMERA" and object.name.startswith(sensor_id):
-				self.scene.camera = object
-			# Add animation to armature
 			if object.type == "ARMATURE":
 				armature = object
-				keyframe_generator.create_animation(armature, timestamps)
+		
+		# Add animation to armature
+		timestamps = load_json(join(image_root, sensor_id, "timeinfo.json"), "timestamps")
+		keyframe_generator.create_animation(armature, timestamps)
+
+		# Create camera for scene
+		self.scene.camera = create_camera(armature, sensor_config)
 		
 
 	def set_image_source(self, path):

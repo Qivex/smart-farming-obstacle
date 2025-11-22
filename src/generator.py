@@ -68,10 +68,9 @@ def main():
 
 	# Example Scenes
 	cam_config = {
+		"sensor": config["sensors"][1],
 		"root": config["dataPath"],
-		"img": "zed_left/zed_left-1.jpg",
-		"id": "zed_left",
-		"kg": keyframe_generator
+		"keyframes": keyframe_generator
 	}
 
 	example_camera_scene = SensorSceneSetup().create_scene(camera_base_scene, "example_sensor_scene", cam_config)
