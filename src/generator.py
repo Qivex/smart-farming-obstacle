@@ -87,10 +87,10 @@ def main():
 	bpy.ops.wm.save_mainfile()
 
 	# Start render
-	for scene in render_scenes:
-		if "skip" in config["render"] and config["render"]["skip"] == True:
-			pass
-		else:
+	if "skip" in config["render"] and config["render"]["skip"] == True:
+		pass
+	else:
+		for scene in render_scenes:
 			bpy.ops.render.render(scene=scene.name, animation=True)
 
 	# Before closing

@@ -1,24 +1,25 @@
 {
 	"$schema": "../../src/schema/generator.config.schema.json",
 	"import": {
-		"dataRoot": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/02_gps/export@1763669336"
+		"dataRoot": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/02_gps/export@1763929736"
 	},
 	"export": {
 		"outputPath": "render",
 		"generateAlphaMaps": true
 	},
 	"render": {
-		"skip": true,
+		"skip": false,
 		"device": "GPU",
 		"samples": 1
 	},
 	"scene": {
 		"obstacleID": "obstacle",
 		"sun": {
-			"angle": {"x": 0.55, "y": 0.76, "z": 0.19, "w": 0.3},
+			"angle": {"x": -0.34, "y": -0.1, "z": 0.57, "w": 0.74},
 			"strength": 10,
 			"temperature": 6500
-		}
+		},
+		"lift": 0.2
 	},
 	"sensors": [
 		{
@@ -36,10 +37,10 @@
 		{
 			"id": "zed_left",
 			"type": "camera",
-			"fov": 110,
+			"fov": 105,
 			"parentBone": "zed_left",
 			"rotationEuler": {
-				"x": 0.711,
+				"x": 0.489,
 				"y": -0.104,
 				"z": -0.343
 			}
@@ -138,11 +139,11 @@
 				"calculatedValues": [
 					{
 						"key": "x",
-						"expression": "lambda data, index: (data[index]['lat'] - 51.2623089) / 0.000009"
+						"expression": "lambda data, index: (data[index]['lat'] - 51.2630134) / 0.000009"
 					},
 					{
 						"key": "y",
-						"expression": "lambda data, index: (data[index]['lon'] - 12.4952893) / 0.0000145"
+						"expression": "lambda data, index: (data[index]['lon'] - 12.4955817) / 0.0000145"
 					},
 					{
 						"key": "direction",

@@ -12,8 +12,14 @@ How to use:
 7) Install Blender and adjust BLENDER_PATH in "run-generator.bat" (optional: remove "--background" flag for GUI)
 8) Select the obstacle from any of the available scenes. Adjust path to .blend project in "run-generator.bat" accordingly.
 9) Start "run-generator.bat", this will create a new folder "render@<timestamp>" (render might take several minutes depending on hardware)
+10) In "validator.config.json" add image paths to array "images" to be analyzed using the given method.
+11) Start "run-validator.bat"
 
 
 Optional:
 - Remove "--background" flag in "run-generator.bat to enable GUI and avoid close-on-finish
-- In "generator.config.json" set property render.skip=true to skip rendering (used for scene creation debugging)
+- In "generator.config.json" set property render.skip=true to skip the actual rendering (used for scene creation debugging)
+
+
+Recommendation:
+- View the rendered .exr files using DJV (https://github.com/grizzlypeak3d/DJV)
