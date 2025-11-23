@@ -12,27 +12,36 @@ class SensorSceneSetup(SceneSetup):
 	def setup(self, config):
 		# From config
 		sensor_config = config["sensor"]
+		sensor_id = sensor_config["id"]
 		image_root = config["root"]
 		keyframe_generator = config["keyframes"]
 
 		# Set path to images
-		sensor_id = sensor_config["id"]
 		if sensor_config["type"] == "camera":
 			sensor_image_file = IMAGE_FILE_FORMATSTRING.format(id=sensor_id, index=1, format="jpg")
 		elif sensor_config["type"] == "lidar":
 			sensor_image_file = IMAGE_FILE_PART_FORMATSTRING.format(id=sensor_id, index=1, part=config["part"] or 0, format="exr")
-		self.set_image_source(join(image_root, sensor_id, sensor_image_file))
-
-		# Set output path(s)
+		
+		# Load image source as movie clip
+		movie_clip = bpy.data.movieclips.load(join(image_root, sensor_id, sensor_image_file))
+		
+		# Match viewport size & scene duration
+		self.scene.render.resolution_x, self.scene.render.resolution_y = movie_clip.size
+		self.scene.frame_end = movie_clip.frame_duration
+		
+		# Configure nodes
 		nodes = self.scene.node_tree.nodes
 		for node in nodes:
-			# Note: The API for these nodes will change in Blender 5.0!!
-			if node.bl_idname == "CompositorNodeOutputFile":
+			if node.bl_idname == "CompositorNodeOutputFile":	# Note: The API for this node has changed in Blender 5.0!!
+				# Set output path(s)
 				node.file_slots[0].path = f"{self.scene.name}-"
 				if node.name.startswith("Output"):
 					node.base_path = f"//render\\{sensor_id}"
 				elif node.name.startswith("Alpha"):
 					node.base_path = f"//alpha\\{sensor_id}"
+			elif node.bl_idname == "CompositorNodeMovieClip":
+				# Set movie clip for node
+				node.clip = movie_clip
 
 		# Find armature
 		for object in self.scene.objects:
@@ -49,15 +58,15 @@ class SensorSceneSetup(SceneSetup):
 		elif sensor_config["type"] == "lidar":
 			camera = create_camera(armature, sensor_config, part=config["part"])
 		self.scene.camera = camera	# Set as active camera for render
-		
 
-	def set_image_source(self, path):
-		# Load image source as movie clip
-		movie_clip = bpy.data.movieclips.load(path)
-		# Set as node value in compositing
-		self.scene.node_tree.nodes.get("Movie Clip").clip = movie_clip
-		# Match viewport size
-		self.scene.render.resolution_x, self.scene.render.resolution_y = movie_clip.size
-		# Match scene duration
-		self.scene.frame_end = movie_clip.frame_duration
+		# Camera Background Images
+		if bpy.app.background == False:	# Only required for GUI
+			camera.data.show_background_images = True
+			camera_background_image = camera.data.background_images.new()
+			camera_background_image.alpha = 1
+			camera_background_image.source = "MOVIE_CLIP"
+			camera_background_image.clip = movie_clip
+
+
+		
 		

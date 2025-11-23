@@ -122,6 +122,13 @@
 							"default": 6500
 						}
 					}
+				},
+				"lift": {
+					"description": "Adjust color balance for blacks - higher values make shadows brighter",
+					"type": "number",
+					"minimum": -1,
+					"maximum": 1,
+					"default": 0
 				}
 			}
 		},

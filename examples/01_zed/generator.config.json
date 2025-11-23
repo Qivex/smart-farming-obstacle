@@ -1,5 +1,12 @@
 {
 	"$schema": "../../src/schema/generator.config.schema.json",
+	"import": {
+		"dataRoot": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/01_zed/export@1763642729"
+	},
+	"export": {
+		"outputPath": "render",
+		"generateAlphaMaps": true
+	},
 	"render": {
 		"device": "GPU",
 		"samples": 1
@@ -7,45 +14,32 @@
 	"scene": {
 		"obstacleID": "obstacle",
 		"sun": {
-			"angle": {"x": 0.55, "y": 0.76, "z": 0.19, "w": 0.3},
-			"strength": 10,
-			"temperature": 6500
+			"angle": {"x": -0.13, "y": 0.52, "z": 0.2, "w": 0.82},
+			"strength": 7,
+			"temperature": 10000
+		},
+		"lift": 0.3
+	},
+	"bones": [
+		{
+			"id": "this_is_a_hack_so_that_zed_left_can_point_back_at_zero",
+			"offset": {"x": 0, "y": 0, "z": 1},
+			"childRotation": {"x": 0, "y": 0, "z": 0, "w": 1},
+			"children": [
+				{
+					"id": "zed_left",
+					"offset": {"x": 0, "y": 0, "z": -1}
+				}
+			]
 		}
-	},
-	"dataPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Code/smart-farming-obstacle/examples/01_zed/export@1763642729",
-	"output": {
-		"exportPath": "render",
-		"generateAlphaMaps": true
-	},
+	],
 	"sensors": [
 		{
 			"id": "zed_left",
 			"type": "camera",
-			"fov": 110,
-			"parentBone": "attachment_zed_left"
-		}
-	],
-	"bones": [
-		{
-			"id": "angle_offset",
-			"offset": {"x": 0, "y": 0, "z": 0.5},
-			"childRotation": {"x": 0, "y": 0, "z": 0, "w": 1},
-			"children": [
-				{
-					"id": "angle_offset_back",
-					"offset": {"x": 0, "y": 0, "z": 0.5},
-					"childRotation": {
-						"x": -0.432624, "y": 0.309374, "z": 0.492588, "w": -0.688826,
-						"note": "=Euler(-2.02, pi, 1.9)"
-					},
-					"children": [
-						{
-							"id": "attachment_zed_left",
-							"offset": {"x": 1, "y": 0, "z": 0}
-						}
-					]
-				}
-			]
+			"fov": 105,
+			"parentBone": "zed_left",
+			"rotationEuler": {"x": -0.07, "y": 0, "z": 3.1415927}
 		}
 	],
 	"animation": {
@@ -54,15 +48,15 @@
 				"file": "zed_odom.json",
 				"values": [
 					{
-						"jsonPath": ["pos", "x"],
+						"jsonPath": ["calculated", "x"],
 						"assignedKey": "pos_x"
 					},
 					{
-						"jsonPath": ["pos", "y"],
+						"jsonPath": ["calculated", "y"],
 						"assignedKey": "pos_y"
 					},
 					{
-						"jsonPath": ["pos", "z"],
+						"jsonPath": ["calculated", "z"],
 						"assignedKey": "pos_z"
 					},
 					{
@@ -80,6 +74,20 @@
 					{
 						"jsonPath": ["rot", "w"],
 						"assignedKey": "rot_w"
+					}
+				],
+				"calculatedValues": [
+					{
+						"key": "x",
+						"expression": "lambda data, index: data[index]['pos']['x'] + 1690"
+					},
+					{
+						"key": "y",
+						"expression": "lambda data, index: data[index]['pos']['y'] - 855"
+					},
+					{
+						"key": "z",
+						"expression": "lambda data, index: data[index]['pos']['z'] - 131"
 					}
 				]
 			}
@@ -107,6 +115,38 @@
 					"boneID": "root",
 					"dataPath": "location",
 					"dataIndex": 1
+				}
+			},
+			{
+				"valueKey": "rot_w",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "rotation_quaternion",
+					"dataIndex": 0
+				}
+			},
+			{
+				"valueKey": "rot_x",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "rotation_quaternion",
+					"dataIndex": 3
+				}
+			},
+			{
+				"valueKey": "rot_y",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "rotation_quaternion",
+					"dataIndex": 1
+				}
+			},
+			{
+				"valueKey": "rot_z",
+				"animationTarget": {
+					"boneID": "root",
+					"dataPath": "rotation_quaternion",
+					"dataIndex": 2
 				}
 			}
 		]

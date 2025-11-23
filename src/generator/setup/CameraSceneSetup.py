@@ -47,7 +47,7 @@ def create_sun(config):
 
 class CameraSceneSetup(SceneSetup):
 	def setup(self, config):
-		CameraSceneCompositor(self.scene, config["export"]["generateAlphaMaps"])
+		CameraSceneCompositor(self.scene, config["export"]["generateAlphaMaps"]).set_lift(config["scene"]["lift"])
 		create_shadow_catcher(self.scene, config["scene"]["obstacleID"])
 		create_sun(config["scene"]["sun"])
 	

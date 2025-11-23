@@ -11,5 +11,8 @@ class BaseSceneSetup(SceneSetup):
 		scene.cycles.device = config["render"]["device"]
 		scene.cycles.samples = config["render"]["samples"]
 
+		# Preserve original color
+		scene.view_settings.view_transform = "Standard"
+
 		# Construct bone tree
 		create_armature(config["bones"])	# Note: Can't store reference to armature because it will break after FULL_COPY
