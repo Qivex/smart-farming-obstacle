@@ -1,0 +1,6 @@
+{
+	"$schema": "../../src/schema/validator.config.schema.json",
+	"model": "yolov5n",
+	"method": "print",
+	"images": []
+}

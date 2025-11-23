@@ -8,7 +8,7 @@
 		"generateAlphaMaps": true
 	},
 	"render": {
-		"skip": true,
+		"skip": false,
 		"device": "GPU",
 		"samples": 1
 	},

@@ -1,0 +1,23 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"required": ["model", "method", "images"],
+	"properties": {
+		"model": {
+			"description": "Which model to load and use. See https://docs.ultralytics.com/models/yolov5/#performance-metrics",
+			"enum": ["yolov5n", "yolov5s", "yolov5m", "yolov5l", "yolov5x", "yolov5n6", "yolov5s6", "yolov5m6", "yolov5l6", "yolov5x6"]
+		},
+		"method": {
+			"description": "What to do with the result",
+			"enum": ["print", "show", "render", "save", "pandas"]
+		},
+		"images": {
+			"description": "All images to be analyzed",
+			"type": "array",
+			"items": {
+				"description": "Path to image file",
+				"type": "string"
+			}
+		}
+	}
+}
