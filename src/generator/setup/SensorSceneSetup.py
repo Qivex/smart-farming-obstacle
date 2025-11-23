@@ -44,7 +44,11 @@ class SensorSceneSetup(SceneSetup):
 		keyframe_generator.create_animation(armature, timestamps)
 
 		# Create camera for scene
-		self.scene.camera = create_camera(armature, sensor_config)
+		if sensor_config["type"] == "camera":
+			camera = create_camera(armature, sensor_config)
+		elif sensor_config["type"] == "lidar":
+			camera = create_camera(armature, sensor_config, part=config["part"])
+		self.scene.camera = camera	# Set as active camera for render
 		
 
 	def set_image_source(self, path):

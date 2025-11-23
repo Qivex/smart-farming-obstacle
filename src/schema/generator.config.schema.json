@@ -49,8 +49,32 @@
 		}
 	},
 	"type": "object",
-	"required": ["render", "scene", "bones", "animation", "sensors", "output"],
+	"required": ["import", "export", "render", "scene", "bones", "sensors", "animation"],
 	"properties": {
+		"import": {
+			"type": "object",
+			"required": ["dataRoot"],
+			"properties": {
+				"dataRoot": {
+					"description": "Absolute path to data exported by extractor in previous step",
+					"type": "string"
+				}
+			}
+		},
+		"export": {
+			"type": "object",
+			"required": ["outputPath", "generateAlphaMaps"],
+			"properties": {
+				"outputPath": {
+					"description": "Folder name of generated output",
+					"type": "string"
+				},
+				"generateAlphaMaps": {
+					"description": "Create an additional folder with alpha maps for each rendered image",
+					"type": "boolean"
+				}
+			}
+		},
 		"render": {
 			"description": "Render settings",
 			"type": "object",
@@ -105,6 +129,64 @@
 			"description": "Hierarchy of connected bones",
 			"type": "array",
 			"items": { "$ref": "#/$defs/boneData" }
+		},
+		"sensors": {
+			"description": "List of sensors generating a rendered image",
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": ["id", "type", "parentBone", "rotationEuler", "fov"],
+				"properties": {
+					"id": {
+						"description": "Unique identifier for the sensor. Also is used for the scene name.",
+						"type": "string"
+					},
+					"type": {
+						"enum": ["camera", "lidar"]
+					},
+					"parentBone": {
+						"description": "ID of the bone by which this sensors movement is controlled",
+						"type": "string"
+					},
+					"rotationEuler": {
+						"description": "Initial rotation (in world space!) before the camera is attached to the bone",
+						"$ref": "#/$defs/offset"
+					},
+					"fov": {
+						"description": "Field of View in degrees",
+						"type": "number",
+						"exclusiveMinimum": 0,
+						"exclusiveMaximum": 180
+					},
+					"fisheye": {
+						"description": "Apply fisheye distortion to camera output",
+						"type": "object",
+						"required": ["mode"],
+						"properties": {
+							"mode": {
+								"description": "See https://docs.blender.org/api/current/bpy.types.Camera.html#bpy.types.Camera.panorama_type",
+								"enum": ["FISHEYE_EQUIDISTANT", "FISHEYE_EQUISOLID"]
+							},
+							"lens": {
+								"description": "Focal length of fisheye lens in mm",
+								"type": "number",
+								"minimum": 0.01,
+								"maximum": 100
+							}
+						},
+						"if": {
+							"properties": {
+								"mode": {
+									"const": "FISHEYE_EQUISOLID"
+								}
+							}
+						},
+						"then": {
+							"required": ["mode", "lens"]
+						}
+					}
+				}
+			}
 		},
 		"animation": {
 			"description": "Animation setup",
@@ -207,112 +289,6 @@
 							}
 						}
 					}
-				}
-			}
-		},
-		"sensors": {
-			"description": "List of sensors generating a rendered image",
-			"type": "array",
-			"items": {
-				"type": "object",
-				"required": ["id", "type", "parentBone", "fov"],
-				"properties": {
-					"id": {
-						"description": "Unique identifier for the sensor. Also is used for the scene name.",
-						"type": "string"
-					},
-					"type": {
-						"enum": ["camera", "lidar"]
-					},
-					"parentBone": {
-						"description": "ID of the bone by which this sensors movement is controlled",
-						"type": "string"
-					},
-					"rotationEuler": {
-						"description": "Initial rotation (in world space!) before the camera is attached to the bone",
-						"$ref": "#/$defs/offset"
-					},
-					"rotationAxis": {
-						"description": "Vector used as rotation axis for all panorama sections",
-						"$ref": "#/$defs/offset"
-					},
-					"firstAngle": {
-						"description": "Angle of first sensor for panorama image relative to Vector(rotationAxis).orthogonal()",
-						"type": "number"
-					},
-					"fov": {
-						"description": "Field of View in degrees",
-						"type": "number",
-						"exclusiveMinimum": 0,
-						"exclusiveMaximum": 180
-					},
-					"fisheye": {
-						"description": "Apply fisheye distortion to camera output",
-						"type": "object",
-						"required": ["mode"],
-						"properties": {
-							"mode": {
-								"description": "See https://docs.blender.org/api/current/bpy.types.Camera.html#bpy.types.Camera.panorama_type",
-								"enum": ["FISHEYE_EQUIDISTANT", "FISHEYE_EQUISOLID"]
-							},
-							"lens": {
-								"description": "Focal length of fisheye lens in mm",
-								"type": "number",
-								"minimum": 0.01,
-								"maximum": 100
-							}
-						},
-						"if": {
-							"properties": {
-								"mode": {
-									"const": "FISHEYE_EQUISOLID"
-								}
-							}
-						},
-						"then": {
-							"required": ["mode", "lens"]
-						}
-					}
-				},
-				"allOf": [
-					{
-						"if": {
-							"properties": {
-								"type": {
-									"const": "camera"
-								}
-							}
-						},
-						"then": {
-							"required": ["id", "type", "parentBone", "fov", "rotationEuler"]
-						}
-					},
-					{
-						"if": {
-							"properties": {
-								"type": {
-									"const": "lidar"
-								}
-							}
-						},
-						"then": {
-							"required": ["id", "type", "parentBone", "fov", "rotationAxis", "firstAngle"]
-						}
-					}
-				]
-			}
-		},
-		"output": {
-			"type": "object",
-			"required": ["exportPath", "generateAlphaMaps"],
-			"properties": {
-				"exportPath": {
-					"description": "Folder name of generated output",
-					"type": "string"
-				},
-				"generateAlphaMaps": {
-					"description": "Create additional folder with alpha map of each output?",
-					"type": "boolean"
 				}
 			}
 		}

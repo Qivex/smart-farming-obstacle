@@ -45,7 +45,7 @@ def main():
 	
 	# Copy Blender project to new file
 	try:
-		selected_directory = f'{realpath(config["output"]["exportPath"])}@{floor(time())}'
+		selected_directory = f'{realpath(config["export"]["outputPath"])}@{floor(time())}'
 		makedirs(selected_directory)
 	except Exception as e:
 		print(f"Error while creating output directory:\n\t{e}")
@@ -64,29 +64,26 @@ def main():
 	
 	# Shared animation data
 	interpolator = DataInterpolator(config["animation"]["sourceMapping"])
-	interpolator.load_data(config["dataPath"])
+	interpolator.load_data(config["import"]["dataRoot"])
 	keyframe_generator = KeyframeGenerator(interpolator, config["animation"]["boneMapping"])
 
 	# Create a scene for each sensor or part:
 	render_scenes = []
 	for sensor in config["sensors"]:
+		scene_config = {
+			"sensor": sensor,
+			"root": config["import"]["dataRoot"],
+			"keyframes": keyframe_generator
+		}
 		if sensor["type"] == "camera":
-			scene = SensorSceneSetup().create_scene(camera_base_scene, sensor["id"], {
-				"sensor": sensor,
-				"root": config["dataPath"],
-				"keyframes": keyframe_generator
-			})
+			scene = SensorSceneSetup().create_scene(camera_base_scene, sensor["id"], scene_config)
 			render_scenes.append(scene)
 		elif sensor["type"] == "lidar":
-			# for part in range(PANORAMA_SENSOR_PARTITION_AMOUNT):
-			part = 1
-			scene = SensorSceneSetup().create_scene(depth_base_scene, f"{sensor['id']}_part{part}", {
-				"sensor": sensor,
-				"part": part,	# Only required for scenes with parts!
-				"root": config["dataPath"],
-				"keyframes": keyframe_generator,
-			})
-			render_scenes.append(scene)
+			for part in range(PANORAMA_SENSOR_PARTITION_AMOUNT):
+				scene_part_config = scene_config.copy()
+				scene_part_config["part"] = part
+				scene = SensorSceneSetup().create_scene(depth_base_scene, f"{sensor['id']}_part{part}", scene_part_config)
+				render_scenes.append(scene)
 		
 	# TODO
 	for scene in render_scenes:
