@@ -1,5 +1,5 @@
 How to use:
-1) Install Python & Blender
+1) Install Python & Blender (tested with Blender 4.5)
 2) Create a Python virtual environment in "src":
 	python venv .
 3) With the virtual environment active, install the requirements:
@@ -11,4 +11,9 @@ How to use:
 6) In both "generator.config.json" files set property "dataFolder" to the path of this new folder
 7) Install Blender and adjust BLENDER_PATH in "run-generator.bat" (optional: remove "--background" flag for GUI)
 8) Select the obstacle from any of the available scenes. Adjust path to .blend project in "run-generator.bat" accordingly.
-8) Start "run-generator.bat", this will create a new folder "render@<timestamp>" (might take several minutes depending on hardware)
+9) Start "run-generator.bat", this will create a new folder "render@<timestamp>" (render might take several minutes depending on hardware)
+
+
+Optional:
+- Remove "--background" flag in "run-generator.bat to enable GUI and avoid close-on-finish
+- In "generator.config.json" set property render.skip=true to skip rendering (used for scene creation debugging)

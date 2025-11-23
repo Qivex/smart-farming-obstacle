@@ -81,13 +81,17 @@
 			"required": ["device", "samples"],
 			"properties": {
 				"device": {
-					"description": "Render operation will be executed on this computing device",
+					"description": "To enable GPU rendering follow https://docs.blender.org/manual/en/4.5/render/cycles/gpu_rendering.html",
 					"enum": ["CPU", "GPU"]
 				},
 				"samples": {
 					"description": "Number of calculated samples for lighting. Higher values greatly increase render time.",
 					"type": "integer",
 					"minimum": 1
+				},
+				"skip": {
+					"description": "Skip render to debug scene creation",
+					"type": "boolean"
 				}
 			}
 		},

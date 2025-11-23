@@ -33,15 +33,12 @@ path.append(join(module_directory, "Lib", "site-packages"))
 from common import load_config
 from common.const import PANORAMA_SENSOR_PARTITION_AMOUNT
 from schema import generator_config_schema
-
 from generator.setup import BaseSceneSetup, CameraSceneSetup, DepthSceneSetup, SensorSceneSetup
-
 from generator.animation import DataInterpolator, KeyframeGenerator
 
 
 def main():
 	config = load_config(schema=generator_config_schema)
-	# Todo: Check config content for additional details not verifiable with schema (e.g. boneID's actually match)
 	
 	# Copy Blender project to new file
 	try:
@@ -84,15 +81,22 @@ def main():
 				scene_part_config["part"] = part
 				scene = SensorSceneSetup().create_scene(depth_base_scene, f"{sensor['id']}_part{part}", scene_part_config)
 				render_scenes.append(scene)
-		
-	# TODO
-	for scene in render_scenes:
-		print(f"Rendering {scene.name}")
-		# bpy.ops.render.render(scene=scene.name, animation=True)
-
-	# Before closing
+	
+	# Save state before render
 	bpy.ops.object.select_all(action="DESELECT")
 	bpy.ops.wm.save_mainfile()
+
+	# Start render
+	for scene in render_scenes:
+		if "skip" in config["render"] and config["render"]["skip"] == True:
+			pass
+		else:
+			bpy.ops.render.render(scene=scene.name, animation=True)
+
+	# Before closing
+	bpy.ops.wm.save_mainfile()
+	if bpy.app.background == True:
+		bpy.ops.wm.quit_blender()
 
 
 if __name__ == "__main__":
