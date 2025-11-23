@@ -28,7 +28,8 @@
 			"rotationEuler": {
 				"x": 0,
 				"y": 2.3561945,
-				"z": 0
+				"z": 0,
+				"comment": "Cardinal cross would be (3.9,pi,pi) for example - try it and view in GUI ;)"
 			}
 		},
 		{

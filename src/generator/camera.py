@@ -1,6 +1,7 @@
 from math import pi
 
 import bpy
+from mathutils import Matrix
 
 from common.const import PANORAMA_SENSOR_PARTITION_AMOUNT
 
@@ -16,7 +17,7 @@ def create_camera(armature, config, part=0):
 	# Apply additional rotation proportional to current part
 	if config["type"] == "lidar":
 		angle = 2*pi*part / PANORAMA_SENSOR_PARTITION_AMOUNT
-		bpy.ops.transform.rotate(value=angle, orient_type="LOCAL", orient_axis="Y")
+		bpy.ops.transform.rotate(value=angle, orient_type="LOCAL", orient_axis="Y", orient_matrix_type="LOCAL", orient_matrix=Matrix.Identity(3))
 		# This looks simple, but imagine how complex this calculation is without local transformation orientation...
 
 	# Adjust camera data
