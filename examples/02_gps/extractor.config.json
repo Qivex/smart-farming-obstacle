@@ -2,8 +2,8 @@
 	"$schema": "../../src/schema/extractor.config.schema.json",
 	"recordingPath": "d:/Uni/Bachelorarbeit/Smart Farming Lab/Data/rosbag2_2025_05_12-14_18_46/rosbag2_2025_05_12-14_18_46_0.mcap",
 	"exportPath": "export",
-	"startTime": 1747052385,
-	"endTime": 1747052390,
+	"startTime": 1747052430,
+	"endTime": 1747052431,
 	"topics": [
 		{
 			"alias": "zed_left",

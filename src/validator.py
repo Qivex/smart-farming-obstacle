@@ -17,7 +17,7 @@ config = load_config(schema=validator_config_schema)
 
 
 # Insprired by https://docs.ultralytics.com/de/yolov5/quickstart_tutorial/#inference-with-pytorch-hub
-from PIL.Image import Image
+from PIL import Image
 
 # Load images
 images = []
